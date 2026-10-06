@@ -1,0 +1,48 @@
+<document 
+  lang="pt-BR" 
+  type="article" 
+  theme="impatech"
+>
+  <title>Trabalho de Otimização Linear</title>
+  <meta>
+    <meta-item key="authors">Huann Vicente, Nicole Freire, et. al</meta-item>
+  </meta>
+
+  <team>
+    <member id="huann" name="Huann Vicente" kind="human" color="yellow"></member>
+    <member id="nicole" name="Nicole Freire" kind="human" color="pink"></member>
+  </team>
+
+  <section id="sec:intro">
+    <title>Parte 1</title>
+
+    <intro>Nessa parte ficamos responsáveis por tratar todo o dado do projeto.</intro>
+
+    <subsection id="subsec:transformadados">
+      <title>Transformando a imagem na matriz</title>
+
+      <equation id="eq:img">
+        B(i, j) := \text{Célula da (i, j) cor }
+      </equation>
+      
+    </subsection>
+
+    Alguma introdução
+
+    <theorem id="thm:pitagoras">
+      <title>Teorema de Pitágoras</title>
+      <equation id="eq:id">a^2 + b^2 = c^2</equation>
+    </theorem>
+
+    <code>
+      def __init__():
+    </code>
+
+    <subsection id="subsection:parte1">
+      <title>Parte 1 - Leitura e Processamento dos dados</title>
+
+      <intro>Nessa etapa tratamos os dados para a matriz</intro>
+      
+    </subsection>
+  </section>
+</document>
