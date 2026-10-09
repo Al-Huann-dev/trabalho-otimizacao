@@ -14,20 +14,20 @@
   </team>
 
   <section id="sec:intro">
-    <title>Parte 1</title>
+    <eyebrow>Parte 1</eyebrow>
+    <title>Transformando o problema em matrizes</title>
 
     <intro>Nessa parte ficamos responsáveis por tratar todo o dado do projeto.</intro>
 
     <subsection id="subsec:transformadados">
       <title>Transformando a imagem na matriz</title>
 
-      <equation id="eq:img">
+      <equation by="huann"  id="eq:img" numbered="false">
         B(i, j) := \text{Célula da (i, j) cor }
       </equation>
-      
-    </subsection>
 
-    Alguma introdução
+      <comment on="eq-img" status="resolved">Tem que avaliar qual o teorema que prova essa afirmação!</comment>
+    </subsection>
 
     <theorem id="thm:pitagoras">
       <title>Teorema de Pitágoras</title>
