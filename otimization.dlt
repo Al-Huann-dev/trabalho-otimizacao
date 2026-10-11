@@ -6,12 +6,22 @@
   <title>Trabalho de Otimização Linear</title>
   <meta>
     <meta-item key="authors">Huann Vicente, Nicole Freire, et. al</meta-item>
+    <meta-item key="instituição">IMPA Tech</meta-item>
   </meta>
 
   <team>
     <member id="huann" name="Huann Vicente" kind="human" color="yellow"></member>
     <member id="nicole" name="Nicole Freire" kind="human" color="pink"></member>
+    <member id="gemini" name="Gemini - 3.6 Flash" kind="agent" color="blue"></member>
   </team>
+
+  
+  <floating>
+    <title>Navegação</title>
+    <toc depth="2" scope="project" />
+  </floating>
+  
+  <review />
 
   <section id="sec:intro">
     <eyebrow>Parte 1</eyebrow>
@@ -19,29 +29,105 @@
 
     <intro>Nessa parte ficamos responsáveis por tratar todo o dado do projeto.</intro>
 
-    <subsection id="subsec:transformadados">
+    <subsection numbered="false" id="subsec:transformadados">
       <title>Transformando a imagem na matriz</title>
 
-      <equation by="huann"  id="eq:img" numbered="false">
+      <equation by="huann"  id="eq-celula" numbered="false">
         B(i, j) := \text{Célula da (i, j) cor }
       </equation>
 
-      <comment on="eq-img" status="resolved">Tem que avaliar qual o teorema que prova essa afirmação!</comment>
+      <comment on="eq-celula" status="resolved">Tem que avaliar qual o teorema que prova essa afirmação!</comment>
     </subsection>
 
-    <theorem id="thm:pitagoras">
-      <title>Teorema de Pitágoras</title>
-      <equation id="eq:id">a^2 + b^2 = c^2</equation>
-    </theorem>
-
-    <code>
-      def __init__():
-    </code>
-
-    <subsection id="subsection:parte1">
+    <subsection id="subsection:parte1" numbered="false" >
       <title>Parte 1 - Leitura e Processamento dos dados</title>
 
       <intro>Nessa etapa tratamos os dados para a matriz</intro>
+      
+    </subsection>
+  </section>
+
+  <comment on="unicidade-id-no" by="gemini" status="open" >Verificar se é necessário, para o projeto.</comment>
+
+  <section id="parte2">
+    <comment by="huann" for="nicole" on="parte2" status="open">Revisar se a estrutura está boa das justificativas</comment>
+    <comment by="huann" for="huann" on="parte2" status="open">
+      Responder o item a)
+    </comment>
+    <comment by="huann" for="huann" on="parte2" status="open">
+      Responder o item b)
+    </comment>
+    <comment by="huann" for="huann" on="parte2" status="open">
+      Responder o item c)
+    </comment>
+    <comment by="huann" for="huann" on="parte2" status="open">
+      Responder o item c)
+    </comment>
+
+    <eyebrow>Parte 2</eyebrow>
+    <title>Criando o grafo a partir da imagem</title>
+
+    <subsection numbered="false">
+      <title>a)</title>
+
+      Utilizamos para criar o <b>identificador do nó</b>
+
+      <equation id="id-no">id(i , j) = (i - 1)n + j</equation>
+
+      Pelo fato da função $id$ ser injetiva por <ref to="unicidade-id-no" />
+
+    <theorem id="unicidade-id-no">
+      <title>Injetividade do Identificador de cada nó</title>
+
+      Dada a função de identificação de um nó $f: I \times J \rightarrow \mathbb{N}$ definida por
+
+      <equation id="id-no">f(i, j) = (i - 1)n + j</equation>
+
+      Onde $n \in \mathbb{N}$ é a dimensão da matriz e $1 \le j_1, j_2 \le n$. Temos que $f$ é uma <b>função injetiva</b>.
+
+        <proof collapsible="true">
+          Suponha que $f(i_1, j_1) = f(i_2, j_2)$. Provaremos que $i_1 = i_2$ e $j_1 = j_2$.
+
+          <equations>
+            f(i_1, j_1) &= f(i_2, j_2) \\
+            (i_1 - 1)n + j_1 &= (i_2 - 1)n + j_2 \\
+            (i_1 - 1)n - (i_2 - 1)n &= j_2 - j_1 \\
+            (i_1 - i_2)n &= j_2 - j_1
+          </equations>
+
+          Como $1 \le j_1 \le n$ e $1 \le j_2 \le n$, temos que $-(n - 1) \le j_2 - j_1 \le n - 1$.
+
+          Observamos que $(j_2 - j_1)$ é um múltiplo de $n$, pois é igual a $(i_1 - i_2)n$. No entanto, o único múltiplo de $n$ no intervalo $[-(n - 1), n - 1]$ é $0$. Portanto:
+
+          <equations>
+            j_2 - j_1 &= 0 \implies j_1 = j_2
+          </equations>
+
+          Substituindo $j_2 - j_1 = 0$ na igualdade $(i_1 - i_2)n = j_2 - j_1$, obtemos:
+
+          <equations>
+            (i_1 - i_2)n &= 0
+          </equations>
+
+          Como $n \ge 1$, segue que:
+
+          <equations>
+            i_1 - i_2 &= 0 \implies i_1 = i_2
+          </equations>
+
+          Como $f(i_1, j_1) = f(i_2, j_2) \implies (i_1, j_1) = (i_2, j_2)$, conclui-se que $f$ é injetiva.
+        </proof>
+      </theorem> 
+
+      Além da procura de um elemento do vértice $v_{ij}$ do grafo do labirinto em tempo $O(1)$.
+
+    </subsection>
+
+    <subsection id="parte2-b">
+      <title>b)</title>
+
+      Sabendo que os id's são criados a partir de <ref to="id-no" />
+
       
     </subsection>
   </section>
