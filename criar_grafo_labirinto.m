@@ -1,10 +1,7 @@
-
 function [caminhos_livres, paredes] = criar_grafo_labirinto(caminho_arquivo = "maze_matrix.txt")
   matriz_labirinto = load("matriz_labirinto_mock.txt").matriz_41x41;
 
   [n_linhas, n_colunas] = size(matriz_labirinto);
-  disp(n_linhas);
-  disp(n_colunas);
 
   n = n_linhas;
 
@@ -21,10 +18,10 @@ function [caminhos_livres, paredes] = criar_grafo_labirinto(caminho_arquivo = "m
       if valor == 1
         caminhos_livres(end + 1) = id_no;
         contador_caminhos_livres = contador_caminhos_livres + 1;
+      else 
+        paredes(end + 1) = id_no;
+        contador_paredes = contador_paredes + 1;
       end
-      
-      paredes(end + 1) = id_no;
-      contador_paredes = contador_paredes + 1;
     end
   end
 
