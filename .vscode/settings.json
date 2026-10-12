@@ -1,0 +1,7 @@
+{
+  "editor.tabSize": 4,
+  "matlab-formatter.indentMode": "all_functions",
+  "matlab-formatter.indentwidth": 4,
+  "octave-formatter.indentwidth": 4,
+  "octave-formatter.separateBlocks": true,
+}
