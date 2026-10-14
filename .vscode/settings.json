@@ -1,0 +1,8 @@
+{
+  "editor.tabSize": 2,
+  "matlab-formatter.indentMode": "all_functions",
+  "matlab-formatter.indentwidth": 2,
+  "octave-formatter.indentwidth": 2,
+  "octave-formatter.separateBlocks": false,
+  "livePreview.defaultPreviewPath": "/otimization.html",
+}

@@ -1,6 +1,8 @@
 {
   "recommendations": [
     "formulahendry.code-runner",
-    "octave.octave"
+    "octave.octave",
+    "AffenWiesel.matlab-formatter",
+    "tusindfryd.octave-formatter"
   ]
 }
