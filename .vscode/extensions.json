@@ -2,6 +2,7 @@
   "recommendations": [
     "formulahendry.code-runner",
     "octave.octave",
-    "AffenWiesel.matlab-formatter"
+    "AffenWiesel.matlab-formatter",
+    "tusindfryd.octave-formatter"
   ]
 }
