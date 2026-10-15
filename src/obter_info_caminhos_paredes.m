@@ -5,9 +5,9 @@ function [caminhos_livres, qtd_caminhos, paredes, qtd_paredes] = obter_info_cami
 
   n = n_celulas
 
-  caminhos_livres = zeros(n^2, 1);
+  caminhos_livres_temp = zeros(n^2, 1);
   qtd_caminhos = 0;
-  paredes = zeros(n^2, 1);
+  paredes_temp = zeros(n^2, 1);
   qtd_paredes = 0;
 
   for i = 1:n
@@ -18,11 +18,14 @@ function [caminhos_livres, qtd_caminhos, paredes, qtd_paredes] = obter_info_cami
 
       if valor == 1
         qtd_caminhos = qtd_caminhos + 1;
-        caminhos_livres(qtd_caminhos) = id_no;
+        caminhos_livres_temp(qtd_caminhos) = id_no;
       else
         qtd_paredes = qtd_paredes + 1;
-        paredes(qtd_paredes) = id_no;
+        paredes_temp(qtd_paredes) = id_no;
       endif
     end
   end
+
+  caminhos_livres = caminhos_livres_temp(1:qtd_caminhos);
+  paredes = paredes_temp(1:qtd_paredes);
 end
