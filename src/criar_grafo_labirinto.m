@@ -1,7 +1,7 @@
 function [caminhos_livres, qtd_caminhos, paredes, qtd_paredes] = criar_grafo_labirinto(caminho_arquivo = "maze_matrix.txt")
   if nargin == 0 || isempty(caminho_arquivo)
     caminho_arquivo = "matriz_labirinto_mock.txt"
-  end
+  endif
 
   matriz_labirinto = load(caminho_arquivo).matriz_41x41;
   [n_linhas, n_colunas] = size(matriz_labirinto);

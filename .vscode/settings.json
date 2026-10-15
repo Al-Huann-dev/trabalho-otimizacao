@@ -5,4 +5,8 @@
   "octave-formatter.indentwidth": 2,
   "octave-formatter.separateBlocks": false,
   "livePreview.defaultPreviewPath": "/otimization.html",
+  "cSpell.words": [
+    "celula",
+    "celulas"
+  ],
 }

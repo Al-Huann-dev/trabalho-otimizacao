@@ -1,5 +1,5 @@
 <document 
-  lang="pt-BR" 
+  lang="pt-BR"
   type="article" 
   theme="impatech"
   theme-mode="light"
@@ -7,9 +7,9 @@
 >
   <title>Trabalho de Otimização Linear</title>
   <meta>
-    <meta-item key="authors">Huann Vicente, Nicole Freire, et. al</meta-item>
     <meta-item key="instituição">IMPA Tech</meta-item>
     <meta-item key="data">3 de Outubro de 2026</meta-item>
+    <meta-item key="autores">Huann Vicente, Nicole Freire</meta-item>
   </meta>
 
   <team>
