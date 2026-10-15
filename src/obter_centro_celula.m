@@ -1,15 +1,15 @@
-pkg load image
+function [x_centro, y_centro] = obter_centro_celula(B, i, j, n_celulas)
+  if nargin < 4 || isempty(n_celulas)
+    n_celulas = 41;
+  end
 
-function [x_centro, y_centro] = obter_centro_celula(i, j)
-    imagem = imread("labirinto_41x41.png");
-    quantidade_blocos_x = 41;
-    quantidade_blocos_y = quantidade_blocos_x;
+  n = n_celulas;
 
-    [altura_imagem, comprimento_imagem, ~] = size(imagem);
+  [altura_imagem, comprimento_imagem, ~] = size(B);
 
-    delta_x = comprimento_imagem / quantidade_blocos_x;
-    delta_y = altura_imagem / quantidade_blocos_y;
+  delta_x = comprimento_imagem / n;
+  delta_y = altura_imagem / n;
 
-    x_centro = (i - 0.5) * delta_x;
-    y_centro = (j - 0.5) * delta_y;
+  x_centro = round((j - 0.5) * delta_x);
+  y_centro = round((i - 0.5) * delta_y);
 end
