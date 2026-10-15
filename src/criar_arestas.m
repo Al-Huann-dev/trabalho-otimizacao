@@ -1,11 +1,8 @@
-function arestas = criar_arestas(B, n_blocos)
+function [arestas, qtd_arestas] = criar_arestas(B, n_blocos)
   if nargin < 2 || isempty(n_blocos)
     n_blocos = 41;
   end
 
-  arestas = [];
-
-  [n_linhas, n_colunas] = size(B);
   n = n_blocos;
 
   max_arestas = 2 * n^2;
@@ -15,23 +12,25 @@ function arestas = criar_arestas(B, n_blocos)
   for i = 1:n
     for j = 1:n
       if j < n
-        if verificar_passagem_horizontal(B, i, j, j + 1)
+        if verificar_passagem_horizontal(B, i, j, j + 1, n)
           id_u = criar_id_no(n, i, j);
           id_v = criar_id_no(n, i, j + 1);
           qtd_arestas = qtd_arestas + 1;
 
-          arestas(qtd_arestas, :) = [id_u, id_v];
-        end
-      end
+          arestas_temp(qtd_arestas, :) = [id_u, id_v];
+        endif
+      endif
       if i < n
-        if verificar_passagem_vertical(B, i, i + 1, j)
+        if verificar_passagem_vertical(B, i, i + 1, j, n)
           id_u = criar_id_no(n, i, j);
           id_v = criar_id_no(n, i + 1, j);
           qtd_arestas = qtd_arestas + 1;
 
-          arestas(qtd_arestas, :) = [id_u, id_v];
-        end
-      end
+          arestas_temp(qtd_arestas, :) = [id_u, id_v];
+        endif
+      endif
     end
   end
+
+  arestas = arestas_temp(1:qtd_arestas, :);
 end

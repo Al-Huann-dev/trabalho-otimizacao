@@ -10,6 +10,5 @@ function tem_passagem = verificar_passagem_horizontal(B, i, j1, j2, n_celulas)
     x_fim = max(x1, x2);
 
     linha_pixel = B(y1, x_inicio:x_fim);
-    media_pixels = mean(linha_pixel);
-    tem_passagem = media_pixels > 0.5;
+    tem_passagem = all(linha_pixel == 1);
 end
