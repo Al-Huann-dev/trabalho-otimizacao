@@ -1,7 +1,7 @@
-function ok = test_criar_arestas()
-  fprintf("Executando: test_criar_arestas... ");
+function ok = test_obter_arestas()
+  fprintf("Executando: test_obter_arestas... ");
 
-  n_blocos = 3;
+  n_celulas = 3;
   tamanho_bloco = 20;
 
   matriz_blocos = [
@@ -13,7 +13,7 @@ function ok = test_criar_arestas()
   % Expande a matriz 3x3 para uma imagem de 60x60 pixels
   B = kron(matriz_blocos, ones(tamanho_bloco));
 
-  [arestas, ~] = criar_arestas(B, n_blocos);
+  [arestas, ~] = obter_arestas(B, n_celulas);
   disp(arestas);
 
   % Validações:

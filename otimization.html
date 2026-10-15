@@ -4537,7 +4537,7 @@ delta-step > * > .lens-drawer {
         Combinando os métodos visto em <delta-ref to="parte2-e" data-target-num="1" data-target-tag="subsection"></delta-ref> e <delta-ref to="parte2-d" data-target-num="" data-target-tag="subsection"></delta-ref><delta-list>
           <delta-item> <delta-c>verificar_passagem_horizontal</delta-c>: Verificará todos os pares de vértices na horizontal </delta-item>;
           <delta-item><delta-c>verificar_passagem_vertical</delta-c>: Veriicará todos os pares de vértices na vertical </delta-item>
-        </delta-list><delta-code lang="matlab" num="4"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">arestas</span> = <span class="hljs-title">criar_arestas</span><span class="hljs-params">(B)</span></span>
+        </delta-list><delta-code lang="matlab" num="4"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">arestas</span> = <span class="hljs-title">obter_arestas</span><span class="hljs-params">(B)</span></span>
   arestas = [];
 
   [n_linhas, n_colunas] = <span class="hljs-built_in">size</span>(B);
@@ -4547,15 +4547,15 @@ delta-step > * > .lens-drawer {
     <span class="hljs-keyword">for</span> <span class="hljs-built_in">j</span> = <span class="hljs-number">1</span>:n_colunas
       <span class="hljs-keyword">if</span> <span class="hljs-built_in">j</span> &lt; n_colunas
         <span class="hljs-keyword">if</span> verificar_passagem_horizontal(B, <span class="hljs-built_in">i</span>, <span class="hljs-built_in">j</span>, <span class="hljs-built_in">j</span> + <span class="hljs-number">1</span>)
-          id_u = criar_id_no(n, <span class="hljs-built_in">i</span>, <span class="hljs-built_in">j</span>);
-          id_v = criar_id_no(n, <span class="hljs-built_in">i</span>, <span class="hljs-built_in">j</span> + <span class="hljs-number">1</span>);
+          id_u = obter_id_no(n, <span class="hljs-built_in">i</span>, <span class="hljs-built_in">j</span>);
+          id_v = obter_id_no(n, <span class="hljs-built_in">i</span>, <span class="hljs-built_in">j</span> + <span class="hljs-number">1</span>);
           arestas(<span class="hljs-keyword">end</span> + <span class="hljs-number">1</span>, :) = [id_u, id_v];
         <span class="hljs-keyword">end</span>
       <span class="hljs-keyword">end</span>
       <span class="hljs-keyword">if</span> <span class="hljs-built_in">i</span> &lt; n_linhas
         <span class="hljs-keyword">if</span> verificar_passagem_vertical(B, <span class="hljs-built_in">i</span>, <span class="hljs-built_in">i</span> + <span class="hljs-number">1</span>, <span class="hljs-built_in">j</span>)
-          id_u = criar_id_no(n, <span class="hljs-built_in">i</span>, <span class="hljs-built_in">j</span>);
-          id_v = criar_id_no(n, <span class="hljs-built_in">i</span> + <span class="hljs-number">1</span>, <span class="hljs-built_in">j</span>);
+          id_u = obter_id_no(n, <span class="hljs-built_in">i</span>, <span class="hljs-built_in">j</span>);
+          id_v = obter_id_no(n, <span class="hljs-built_in">i</span> + <span class="hljs-number">1</span>, <span class="hljs-built_in">j</span>);
 
           arestas(<span class="hljs-keyword">end</span> + <span class="hljs-number">1</span>, :) = [id_u, id_v];
         <span class="hljs-keyword">end</span>

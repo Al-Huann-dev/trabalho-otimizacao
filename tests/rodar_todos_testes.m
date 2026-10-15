@@ -11,12 +11,13 @@ fprintf("      EXECUÇÃO DA SUÍTE DE TESTES        \n");
 fprintf("=========================================\n\n");
 
 sucessos = 0;
-total = 4;
+total = 5;
 
-sucessos = sucessos + test_criar_id_no();
+sucessos = sucessos + test_obter_id_no();
 sucessos = sucessos + test_verificar_passagem_horizontal();
 sucessos = sucessos + test_verificar_passagem_vertical();
-sucessos = sucessos + test_criar_arestas();
+sucessos = sucessos + test_obter_arestas();
+sucessos = sucessos + test_obter_info_labirinto();
 
 fprintf("\n=========================================\n");
 fprintf(" RESULTADO: %d/%d módulos de teste passaram.\n", sucessos, total);
