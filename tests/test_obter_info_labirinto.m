@@ -1,5 +1,5 @@
-function ok = test_obter_info_labirinto()
-  fprintf("Executando: test_obter_info_labirinto... ");
+function ok = test_obter_grafo_labirinto()
+  fprintf("Executando: test_obter_grafo_labirinto... ");
 
   % --- CENÁRIO MOCK (Grid 3x3) ---
   % Matriz com 6 caminhos livres (1) e 3 paredes (0)
@@ -17,7 +17,7 @@ function ok = test_obter_info_labirinto()
   B = kron(matriz_blocos, ones(tamanho_bloco));
 
   % --- EXECUÇÃO ---
-  [qtd_arestas, qtd_vertices] = obter_info_labirinto(B, n_blocos);
+  [qtd_arestas, qtd_vertices] = obter_grafo_labirinto(B, n_blocos);
 
   % --- VALIDAÇÕES ---
   % 1. Quantidade de vértices (caminhos livres) esperada = 6

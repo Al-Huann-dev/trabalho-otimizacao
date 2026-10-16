@@ -17,7 +17,7 @@ sucessos = sucessos + test_obter_id_no();
 sucessos = sucessos + test_verificar_passagem_horizontal();
 sucessos = sucessos + test_verificar_passagem_vertical();
 sucessos = sucessos + test_obter_arestas();
-sucessos = sucessos + test_obter_info_labirinto();
+sucessos = sucessos + test_obter_grafo_labirinto();
 sucessos = sucessos + test_obter_info_caminhos_paredes()
 
 fprintf("\n=========================================\n");
