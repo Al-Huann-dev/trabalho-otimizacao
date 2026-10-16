@@ -52,17 +52,17 @@
   <comment on="unicidade-id-no" by="gemini" status="open" >Verificar se é necessário, para o projeto.</comment>
 
   <section numbered="false" id="parte2">
-    <comment by="huann" for="nicole" on="parte2" status="open">Revisar se a estrutura está boa das justificativas</comment>
-    <comment by="huann" for="huann" on="parte2" status="open">
+    <comment by="huann" for="nicole" on="parte2" status="resolved">Revisar se a estrutura está boa das justificativas</comment>
+    <comment by="huann" for="huann" on="parte2" status="resolved">
       Responder o item a)
     </comment>
-    <comment by="huann" for="huann" on="parte2" status="open">
+    <comment by="huann" for="huann" on="parte2" status="resolved">
       Responder o item b)
     </comment>
-    <comment by="huann" for="huann" on="parte2" status="open">
+    <comment by="huann" for="huann" on="parte2" status="resolved">
       Responder o item c)
     </comment>
-    <comment by="huann" for="huann" on="parte2" status="open">
+    <comment by="huann" for="huann" on="parte2" status="resolved">
       Responder o item c)
     </comment>
 
@@ -71,13 +71,13 @@
 
     <subsection numbered="false">
       <eyebrow>item a)</eyebrow>
-      <title>Identificador</title>
+      <title>Identificador de uma célula</title>
 
       Utilizamos para criar o <b>identificador do nó</b>
 
       <equation id="id-no">id(i , j) = (i - 1)n + j</equation>
 
-      Pelo fato da função $id$ ser injetiva por <ref to="unicidade-id-no" />
+      Pelo fato da função $id$ ser injetiva pela <ref to="unicidade-id-no" />
 
     <proposition collapsible="true" id="unicidade-id-no">
       <title>Injetividade do Identificador de cada nó</title>
@@ -122,7 +122,14 @@
         </proof>
       </proposition> 
 
-      Além da procura de um elemento do vértice $v_{ij}$ do grafo do labirinto em tempo $O(1)$.
+      A função foi implementada no módulo <c>obter_id_no.m</c>
+
+      <code lang="matlab">
+      function id = obter_id_no(n, i, j)
+        id = (i - 1) * n + j;
+      end
+      </code>
+
     </subsection>
 
     <subsection numbered="false" id="parte2-b">
@@ -139,14 +146,14 @@
       Então calculamos primeiro os pixels médios de uma célula. 
 
       <equations id="delta-x">
-        \Delta{x} := \text{Valor médio de pixels da célula no eixo x} 
-        &= \frac{W}{c_x} \\
+        \Delta{x} &:= \text{Valor médio de pixels da célula no eixo x} \\
+        &= \frac{W}{c_x} = \frac{740}{41} \approx 18 \text{px} \\
 
-        \Delta{y} := \text{Valor médio de pixels da célula no eixo y} 
-        &= \frac{H}{c_y} \\
+        \Delta{y} &= \text{Valor médio de pixels da célula no eixo y} 
+        \\ &= \frac{H}{c_y} = \frac{740}{41} \approx 18 \text{px}\\
       </equations>
 
-      <figure src="exemplo_celula_centro.png" alt="Ilustracao do centro da celula">
+      <figure src="./images/exemplo_celula_centro.png" alt="Ilustracao do centro da celula">
         <caption>Centro de uma célula</caption>
       </figure>
 
@@ -174,24 +181,31 @@
         a sua esquerda e acima, dada por <m>(i - 1)  \times \Delta{x}</m> e <m>(j -1) \times \Delta{y}</m> e somar a posição relativa 
         centro, resultando nas seguintes expressões para calcular o centro da célula:
 
-        <equation id="x-centro">X(i) = i \cdot \Delta{x} - \frac{1}{2}\Delta{x}</equation>
-        <equation id="y-centro">Y(j) = j \cdot \Delta{y} - \frac{1}{2}\Delta{y}</equation>
+        <equation id="x-centro">
+          (i - 1) \cdot \Delta{x} + \Delta{x} / 2 &= i \cdot \Delta{x} - \Delta{x} / 2 \\ 
+          &= X(i) &= \lfloor i \cdot \Delta{x} - \Delta{x} / 2 \rfloor
+        </equation>
 
-        A partir das relações <ref to="x-centro" /> e <ref to="y-centro" /> implementamos:
+        <equation id="y-centro">Y(j) = \lfloor j \cdot \Delta{y} - \Delta{y} / 2 \rfloor</equation>
+
+        Onde <m>X(i) \in \mathbb{N}</m> e <m>Y(i) \in \mathbb{N}</m>. A partir das relações <ref to="x-centro" /> e <ref to="y-centro" /> 
+        implementamos no módulo <c>obter_centro_celula.m</c>
 
         <code lang="matlab" lines="true">
-          function [x_centro, y_centro] = obter_centro_celula(i, j)
-            imagem = imread("labirinto_41x41.png");
-            quantidade_blocos_x = 41;
-            quantidade_blocos_y = quantidade_blocos_x;
+          function [x_centro, y_centro] = obter_centro_celula(B, i, j, n_celulas)
+            if nargin < 4 || isempty(n_celulas)
+              n_celulas = 41;
+            end
 
-            [altura_imagem, comprimento_imagem, ~] = size(imagem);
+            n = n_celulas;
 
-            delta_x = comprimento_imagem / quantidade_blocos_x;
-            delta_y = altura_imagem / quantidade_blocos_y;
+            [altura_imagem, comprimento_imagem, ~] = size(B);
 
-            x_centro = (i - 0.5) * delta_x;
-            y_centro = (j - 0.5) * delta_y;
+            delta_x = comprimento_imagem / n;
+            delta_y = altura_imagem / n;
+
+            x_centro = round((j - 0.5) * delta_x);
+            y_centro = round((i - 0.5) * delta_y);
           end
         </code>
       </subsubsection>
@@ -200,12 +214,36 @@
       <subsection numbered="false" id="parte2-c">
         <eyebrow>item c)</eyebrow>
         <title>Obtendo os caminhos livres horizontais</title>
+
+        O maior problema que temos para verificar a passagem de um labirinto é lidar com o tamanho da imagem
+        com o tamanho dos blocos do labirinto. Para termos uma métrica de distância entre células adotamos o centro
+        de um bloco\célula da <c>obter_centro_celula</c>. A idéia para verificar se há uma passagem entre pares de
+        células e comparar se os dois centro são caminhos livres. Mas isso pode ocasionar em falsos caminhos livres, então
+        faremos a verificação se todos os pixels entre cada centro são todos pretos
+
+        <box>
+          <title>Custo computacional da Verificação</title>
+          Note que na verificação <c>all(linhas_pixels == 1)</c> seu custo é da forma <m>O(\Delta x)</m> que é pior 
+          que <m>O(1)</m> onde comparamos apenas os centros de cada bloco, mas como <m>\Delta x</m> na prática é pequeno, temos
+          um custo amortizado <m>O(1)</m>.
+        </box>
         
-        Para acharmos os pares de vértices horizontais que contém uma caminho livre, basta verificarmos se os mesmos contém o campo "valor" igual à 1.
         <code lang="matlab">
-          function existe = verificar_passagem_vertical(B, i1, i2, j)
-              existe = (B(i1, j) == 1 && B(i2, j) == 1);
+          function tem_passagem = verificar_passagem_horizontal(B, i, j1, j2, n_celulas)
+            if nargin < 5 || isempty(n_celulas)
+              n_celulas = 41;
+            endif
+
+            [x1, y1] = obter_centro_celula(B, i, j1, n_celulas);
+            [x2, ~] = obter_centro_celula(B, i, j2, n_celulas);
+
+            x_inicio = min(x1, x2);
+            x_fim = max(x1, x2);
+
+            linha_pixel = B(y1, x_inicio:x_fim);
+            tem_passagem = all(linha_pixel == 1);
           end
+
         </code>
       </subsection>
 
@@ -217,8 +255,19 @@
         seus valores como 1.
 
         <code lang="matlab">
-          function existe = verificar_passagem_vertical(B, i1, i2, j)
-              existe = (B(i1, j) == 1 && B(i2, j) == 1);
+          function tem_passagem = verificar_passagem_vertical(B, i1, i2, j, n_celulas)
+            if nargin < 5 || isempty(n_celulas)
+              n_celulas = 41;
+            endif
+
+            [x1, y1] = obter_centro_celula(B, i1, j, n_celulas);
+            [~, y2] = obter_centro_celula(B, i2, j, n_celulas);
+
+            y_inicio = min(y1, y2);
+            y_fim = max(y1, y2);
+
+            coluna_pixel = B(y_inicio:y_fim, x1);
+            tem_passagem = all(coluna_pixel == 1);
           end
         </code>
       </subsection>
@@ -237,33 +286,42 @@
         </list>
 
         <code lang="matlab">
-          function arestas = obter_arestas(B)
-            arestas = [];
+          function [arestas, qtd_arestas] = obter_arestas(B, n_celulas)
+            if nargin < 2 || isempty(n_celulas)
+              n_celulas = 41;
+            end
 
-            [n_linhas, n_colunas] = size(B);
-            n = n_linhas;
+            n = n_celulas;
 
-            for i = 1:n_linhas
-              for j = 1:n_colunas
-                if j < n_colunas
-                  if verificar_passagem_horizontal(B, i, j, j + 1)
+            max_arestas = 2 * n^2;
+            arestas_temp = zeros(max_arestas, 2);
+            qtd_arestas = 0;
+
+            for i = 1:n
+              for j = 1:n
+                if j < n
+                  if verificar_passagem_horizontal(B, i, j, j + 1, n)
                     id_u = obter_id_no(n, i, j);
                     id_v = obter_id_no(n, i, j + 1);
-                    arestas(end + 1, :) = [id_u, id_v];
-                  end
-                end
-                if i < n_linhas
-                  if verificar_passagem_vertical(B, i, i + 1, j)
+                    qtd_arestas = qtd_arestas + 1;
+
+                    arestas_temp(qtd_arestas, :) = [id_u, id_v];
+                  endif
+                endif
+                if i < n
+                  if verificar_passagem_vertical(B, i, i + 1, j, n)
                     id_u = obter_id_no(n, i, j);
                     id_v = obter_id_no(n, i + 1, j);
+                    qtd_arestas = qtd_arestas + 1;
 
-                    arestas(end + 1, :) = [id_u, id_v];
-                  end
-                end
+                    arestas_temp(qtd_arestas, :) = [id_u, id_v];
+                  endif
+                endif
               end
             end
-          end
 
+            arestas = arestas_temp(1:qtd_arestas, :);
+          end
         </code>
       </subsection>
 
