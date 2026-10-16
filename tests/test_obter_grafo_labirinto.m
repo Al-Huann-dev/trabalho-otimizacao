@@ -17,7 +17,7 @@ function ok = test_obter_grafo_labirinto()
   B = kron(matriz_blocos, ones(tamanho_bloco));
 
   % --- EXECUÇÃO ---
-  [qtd_arestas, qtd_vertices] = obter_grafo_labirinto(B, n_blocos);
+  [~, qtd_arestas, ~, qtd_vertices] = obter_grafo_labirinto(B, n_blocos);
 
   % --- VALIDAÇÕES ---
   % 1. Quantidade de vértices (caminhos livres) esperada = 6
