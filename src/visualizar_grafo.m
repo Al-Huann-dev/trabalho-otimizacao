@@ -1,4 +1,4 @@
-function visualizar_grafo(img, arestas, vertices, s, t, n_celulas, caminho)
+function visualizar_grafo(img, arestas, vertices, s, t, n_celulas, caminho, mostrar_grafo)
   if nargin < 7
     caminho = [];
   endif
