@@ -6,7 +6,7 @@ n = 41;
 B = carregar_imagem_binaria("labirinto.jpeg");
 
 % Parte 1 / item d) - Exibindo a imagem 'cropada', identificando a saída e a entrada
-imwrite(B, "labirinto_41x41.png");
+imwrite(B, "labirinto_41x41.png");''
 
 % Parte 2 / item b) - Centro de cada nó
 
