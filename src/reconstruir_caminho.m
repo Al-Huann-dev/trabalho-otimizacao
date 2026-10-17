@@ -1,15 +1,18 @@
 function caminho = reconstruir_caminho(anterior, s, t)
-  caminho = t;
+  caminho = [];
   v = t;
 
-  while v ~= s
-    v = anterior(v);
-    if v == 0
-      caminho = [];
-      return;
+  while v ~= 0
+    caminho = [v, caminho];
+
+    if v == s
+      break;
     endif
-    caminho(end + 1) = v;
+
+    v = anterior(v);
   endwhile
 
-  caminho = fliplr(caminho);
+  if isempty(caminho) || caminho(1) ~= s
+    caminho = [];
+  endif
 end

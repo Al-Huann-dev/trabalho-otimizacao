@@ -3,8 +3,8 @@ function tem_passagem = verificar_passagem_horizontal(B, i, j1, j2, n_celulas)
     n_celulas = 41;
   endif
 
-  [x1, y1] = obter_centro_celula(B, i, j1, n_celulas);
-  [x2, ~] = obter_centro_celula(B, i, j2, n_celulas);
+  [x1, y1] = calcular_centro_celula(B, i, j1, n_celulas);
+  [x2, ~] = calcular_centro_celula(B, i, j2, n_celulas);
 
   x_inicio = min(x1, x2);
   x_fim = max(x1, x2);
