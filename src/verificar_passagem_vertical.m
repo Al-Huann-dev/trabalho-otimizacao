@@ -3,8 +3,8 @@ function tem_passagem = verificar_passagem_vertical(B, i1, i2, j, n_celulas)
     n_celulas = 41;
   endif
 
-  [x1, y1] = obter_centro_celula(B, i1, j, n_celulas);
-  [~, y2] = obter_centro_celula(B, i2, j, n_celulas);
+  [x1, y1] = calcular_centro_celula(B, i1, j, n_celulas);
+  [~, y2] = calcular_centro_celula(B, i2, j, n_celulas);
 
   y_inicio = min(y1, y2);
   y_fim = max(y1, y2);

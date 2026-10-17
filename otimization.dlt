@@ -122,10 +122,11 @@
         </proof>
       </proposition> 
 
-      A função foi implementada no módulo <c>obter_id_no.m</c>
+      A função foi implementada no módulo <c>calcular_id_no
+.m</c>
 
-      <code lang="matlab">
-      function id = obter_id_no(n, i, j)
+      <code lines="false" lang="matlab">
+      function id = calcular_id_no(n, i, j)
         id = (i - 1) * n + j;
       end
       </code>
@@ -145,13 +146,13 @@
 
       Então calculamos primeiro os pixels médios de uma célula. 
 
-      <equations id="delta-x">
+      <!-- <equations id="delta-x">
         \Delta{x} &:= \text{Valor médio de pixels da célula no eixo x} \\
         &= \frac{W}{c_x} = \frac{740}{41} \approx 18 \text{px} \\
 
         \Delta{y} &= \text{Valor médio de pixels da célula no eixo y} 
         \\ &= \frac{H}{c_y} = \frac{740}{41} \approx 18 \text{px}\\
-      </equations>
+      </equations> -->
 
       <figure src="./images/exemplo_celula_centro.png" alt="Ilustracao do centro da celula">
         <caption>Centro de uma célula</caption>
@@ -164,11 +165,11 @@
         pixels. 
       </box>
 
-      <figure src="exemplo_deltas.png" alt="Ilustracao do centro da celula">
+      <figure src="./images/exemplo_deltas.png" alt="Ilustracao do centro da celula">
         <caption>Podemos observar uma zona de pixels que podem determinar o centro de célula</caption>
       </figure>
 
-      <figure src="exemplo_percorrer_celulas.png" alt="Ilustracao do centro da celula">
+      <figure src="./images/exemplo_percorrer_celulas.png" alt="Ilustracao do centro da celula">
         <caption>Podemos observar uma zona de pixels que podem determinar o centro de célula</caption>
       </figure>
 
@@ -181,18 +182,23 @@
         a sua esquerda e acima, dada por <m>(i - 1)  \times \Delta{x}</m> e <m>(j -1) \times \Delta{y}</m> e somar a posição relativa 
         centro, resultando nas seguintes expressões para calcular o centro da célula:
 
-        <equation id="x-centro">
+        <equations id="x-centro">
           (i - 1) \cdot \Delta{x} + \Delta{x} / 2 &= i \cdot \Delta{x} - \Delta{x} / 2 \\ 
-          &= X(i) &= \lfloor i \cdot \Delta{x} - \Delta{x} / 2 \rfloor
-        </equation>
+          & \Rightarrow X(i) = \lfloor i \cdot \Delta{x} - \Delta{x} / 2 \rfloor
 
-        <equation id="y-centro">Y(j) = \lfloor j \cdot \Delta{y} - \Delta{y} / 2 \rfloor</equation>
+        </equations>
+
+        De forma análoga a <ref to="x-centro" >Equação 7</ref>, temos que
+
+        <equations id="y-centro">
+          Y(j) = \lfloor j \cdot \Delta{y} - \Delta{y} / 2 \rfloor
+        </equations>
 
         Onde <m>X(i) \in \mathbb{N}</m> e <m>Y(i) \in \mathbb{N}</m>. A partir das relações <ref to="x-centro" /> e <ref to="y-centro" /> 
-        implementamos no módulo <c>obter_centro_celula.m</c>
+        implementamos no módulo <c>calcular_centro_celula.m</c>
 
-        <code lang="matlab" lines="true">
-          function [x_centro, y_centro] = obter_centro_celula(B, i, j, n_celulas)
+        <code lang="matlab" lines="false">
+          function [x_centro, y_centro] = calcular_centro_celula(B, i, j, n_celulas)
             if nargin < 4 || isempty(n_celulas)
               n_celulas = 41;
             end
@@ -217,25 +223,27 @@
 
         O maior problema que temos para verificar a passagem de um labirinto é lidar com o tamanho da imagem
         com o tamanho dos blocos do labirinto. Para termos uma métrica de distância entre células adotamos o centro
-        de um bloco\célula da <c>obter_centro_celula</c>. A idéia para verificar se há uma passagem entre pares de
+        de um bloco\célula através de <m>X(i)</m>, <m>Y(j)</m> das Equações <ref to="x-centro" >7</ref>, <ref to="y-centro" />.
+        
+        A idéia para verificar se há uma passagem entre pares de
         células e comparar se os dois centro são caminhos livres. Mas isso pode ocasionar em falsos caminhos livres, então
         faremos a verificação se todos os pixels entre cada centro são todos pretos
 
         <box>
           <title>Custo computacional da Verificação</title>
-          Note que na verificação <c>all(linhas_pixels == 1)</c> seu custo é da forma <m>O(\Delta x)</m> que é pior 
-          que <m>O(1)</m> onde comparamos apenas os centros de cada bloco, mas como <m>\Delta x</m> na prática é pequeno, temos
-          um custo amortizado <m>O(1)</m>.
+          Note que na verificação <c>all(linhas_pixels == 1)</c> possui custo da forma <m>O(\Delta x)</m> que é pior 
+          que <m>O(1)</m>: alternativa que comparamos apenas os centros de cada bloco, mas como <m>\Delta x</m> na prática é pequeno, temos que 
+          <m>O(\Delta{x}) \sim O(1)</m>.
         </box>
         
-        <code lang="matlab">
+        <code lines="false" lang="matlab">
           function tem_passagem = verificar_passagem_horizontal(B, i, j1, j2, n_celulas)
             if nargin < 5 || isempty(n_celulas)
               n_celulas = 41;
             endif
 
-            [x1, y1] = obter_centro_celula(B, i, j1, n_celulas);
-            [x2, ~] = obter_centro_celula(B, i, j2, n_celulas);
+            [x1, y1] = calcular_centro_celula(B, i, j1, n_celulas);
+            [x2, ~] = calcular_centro_celula(B, i, j2, n_celulas);
 
             x_inicio = min(x1, x2);
             x_fim = max(x1, x2);
@@ -251,17 +259,17 @@
         <eyebrow>item d)</eyebrow>
         <title>Obtendo os caminhos livres verticais</title>
 
-        Achamos os pares de vértices horizontais que estão livres, verificando se dado par de vértice <m>u</m> e <m>v</m> possuem
-        seus valores como 1.
+        De forma semelhante a <ref to="parte2-c" >caminhos livres horizontais</ref> implementamos
+        o método <c>verificar_passagem_vertical.m</c>, desta vez <m>i</m> é fixo.
 
-        <code lang="matlab">
+        <code lines="false" lang="matlab">
           function tem_passagem = verificar_passagem_vertical(B, i1, i2, j, n_celulas)
             if nargin < 5 || isempty(n_celulas)
               n_celulas = 41;
             endif
 
-            [x1, y1] = obter_centro_celula(B, i1, j, n_celulas);
-            [~, y2] = obter_centro_celula(B, i2, j, n_celulas);
+            [x1, y1] = calcular_centro_celula(B, i1, j, n_celulas);
+            [~, y2] = calcular_centro_celula(B, i2, j, n_celulas);
 
             y_inicio = min(y1, y2);
             y_fim = max(y1, y2);
@@ -285,7 +293,7 @@
           <item><c>verificar_passagem_vertical</c>: Veriicará todos os pares de vértices na vertical </item>
         </list>
 
-        <code lang="matlab">
+        <code lines="false" lang="matlab">
           function [arestas, qtd_arestas] = obter_arestas(B, n_celulas)
             if nargin < 2 || isempty(n_celulas)
               n_celulas = 41;
@@ -293,7 +301,7 @@
 
             n = n_celulas;
 
-            max_arestas = 2 * n^2;
+            max_arestas = 2 * n^2; % Total de arestas possíveis
             arestas_temp = zeros(max_arestas, 2);
             qtd_arestas = 0;
 
@@ -301,8 +309,8 @@
               for j = 1:n
                 if j < n
                   if verificar_passagem_horizontal(B, i, j, j + 1, n)
-                    id_u = obter_id_no(n, i, j);
-                    id_v = obter_id_no(n, i, j + 1);
+                    id_u = calcular_id_no(n, i, j);
+                    id_v = calcular_id_no(n, i, j + 1);
                     qtd_arestas = qtd_arestas + 1;
 
                     arestas_temp(qtd_arestas, :) = [id_u, id_v];
@@ -310,8 +318,8 @@
                 endif
                 if i < n
                   if verificar_passagem_vertical(B, i, i + 1, j, n)
-                    id_u = obter_id_no(n, i, j);
-                    id_v = obter_id_no(n, i + 1, j);
+                    id_u = calcular_id_no(n, i, j);
+                    id_v = calcular_id_no(n, i + 1, j);
                     qtd_arestas = qtd_arestas + 1;
 
                     arestas_temp(qtd_arestas, :) = [id_u, id_v];
@@ -334,5 +342,58 @@
 
     Na parte da visualização utilizamos todos os métodos criado a partir da <ref to="parte3" />
     
+  </section>
+
+  <section id="parte5" numbered="false">
+    <eyebrow>Parte 5</eyebrow>
+    <title>Algoritmo Dijkstra</title>
+
+    O algoritmo Dijkstra é uma algoritmo que adota uma estratégia <b>gulosa</b> para 
+    determinar o caminho mínimo entre dois pares de vértices de um grafo <m>G</m>. Diferentemente
+    do <ref to="thm:id" >Algoritmo de Floyd-Marshall</ref> ele determina o caminho mínimo entre um
+    único vértice.
+
+    O algoritmo começa definindo as distâncias de cada arestas, que no nosso caso é o custo <m>c_{uv} = 1</m>,
+    que nos diz que para toda aresta que nos movermos nas direções <m>\leftarrow, \uparrow, \rightarrow, \downarrow</m>
+
+    <code lang="matlab" lines="false">
+      function [dist, anterior] = dijkstra(A, s)
+        N = size(A, 1);
+
+          dist = Inf(N, 1);
+            anterior = zeros(N, 1);
+
+            dist(s) = 0;
+
+            heap_distancias = zeros(N * 4, 2);
+            heap_tamanho = 0;
+
+            [heap_distancias, heap_tamanho] = heap_push(heap_distancias, heap_tamanho, 0, s);
+
+            while heap_tamanho > 0
+              [heap_distancias, heap_tamanho, d_u, u] = heap_pop(heap_distancias, heap_tamanho);
+
+              if d_u > dist(u)
+                continue;
+              endif
+
+              vizinhos = find(A(u, :));
+              for v = vizinhos
+                peso = A(u, v);
+                nova_dist = dist(u) + peso;
+
+                if nova_dist < dist(v)
+                  dist(v) = nova_dist;
+                  anterior(v) = u;
+
+                  [heap_distancias, heap_tamanho] = heap_push(heap_distancias, heap_tamanho, nova_dist, v);
+                endif
+              endfor
+            endwhile
+          end
+
+    </code>
+
+
   </section>
 </document>
