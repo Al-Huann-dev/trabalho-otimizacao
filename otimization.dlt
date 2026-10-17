@@ -354,7 +354,10 @@
     único vértice.
 
     O algoritmo começa definindo as distâncias de cada arestas, que no nosso caso é o custo <m>c_{uv} = 1</m>,
-    que nos diz que para toda aresta que nos movermos nas direções <m>\leftarrow, \uparrow, \rightarrow, \downarrow</m>
+    que nos diz que para toda aresta que nos movermos nas direções <m>\leftarrow, \uparrow, \rightarrow, \downarrow</m>.
+    Inicializamos primeiro com o nó de origem com custo <m>0</m>, e os demais vértices com custo 
+    <m>\infty</m>, depois marcamos todos os nós como <b>não visitados</b>. A estratégia gulosa está em pegar
+    a menor distância de um vértice.
 
     <code lang="matlab" lines="false">
       function [dist, anterior] = dijkstra(A, s)
@@ -391,7 +394,6 @@
               endfor
             endwhile
           end
-
     </code>
 
 
