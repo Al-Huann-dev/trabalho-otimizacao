@@ -13,7 +13,7 @@ function [s, t, pos_s, pos_t] = obter_entrada_saida(B, n_celulas)
   ids_borda = livres(na_borda);
 
   if numel(ids_borda) ~= 2
-    error("Esperava 2 celulas livres na borda (entrada e saida), encontrei %d.", numel(ids_borda));
+    error("Esperava-se 2 celulas livres na borda (entrada e saida). Encontrado %d.", numel(ids_borda));
   endif
 
   s = ids_borda(1);   % menor id: entrada

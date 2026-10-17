@@ -2,7 +2,9 @@ function visualizar_grafo(img, arestas, vertices, s, t, n_celulas, caminho)
   if nargin < 7
     caminho = [];
   endif
-
+  if nargin < 8 || isempty(mostrar_grafo)
+    mostrar_grafo = true;
+  endif
   n = n_celulas;
 
   % centro = (x = coluna, y = linha) de todas as celulas, indexado pelo id de cada nó
@@ -19,11 +21,12 @@ function visualizar_grafo(img, arestas, vertices, s, t, n_celulas, caminho)
   hold on;
 
   % desenha todas as arestas em uma única chamada utlizando a estratégia dos 'NaNs'
-  u = arestas(:, 1);
-  v = arestas(:, 2);
-  X = [x_c(u)'; x_c(v)'; NaN(1, numel(u))];
-  Y = [y_c(u)'; y_c(v)'; NaN(1, numel(u))];
-  plot(X(:), Y(:), "-", "Color", [0.90 0.50 0.00], "LineWidth", 1);
+  if mostrar_grafo
+    u = arestas(:, 1);
+    v = arestas(:, 2);
+    X = [x_c(u)'; x_c(v)'; NaN(1, numel(u))];
+    Y = [y_c(u)'; y_c(v)'; NaN(1, numel(u))];
+    plot(X(:), Y(:), "-", "Color", [0.90 0.50 0.00], "LineWidth", 1);
 
   % plota os vértices
   plot(x_c(vertices), y_c(vertices), "o", "MarkerSize", 3, ...
