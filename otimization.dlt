@@ -52,25 +52,10 @@
   <comment on="unicidade-id-no" by="gemini" status="open" >Verificar se é necessário, para o projeto.</comment>
 
   <section numbered="false" id="parte2">
-    <comment by="huann" for="nicole" on="parte2" status="resolved">Revisar se a estrutura está boa das justificativas</comment>
-    <comment by="huann" for="huann" on="parte2" status="resolved">
-      Responder o item a)
-    </comment>
-    <comment by="huann" for="huann" on="parte2" status="resolved">
-      Responder o item b)
-    </comment>
-    <comment by="huann" for="huann" on="parte2" status="resolved">
-      Responder o item c)
-    </comment>
-    <comment by="huann" for="huann" on="parte2" status="resolved">
-      Responder o item c)
-    </comment>
-
     <eyebrow>Parte 2</eyebrow>
     <title numbered="false">Criando o grafo a partir da imagem</title>
 
     <subsection numbered="false">
-      <eyebrow>item a)</eyebrow>
       <title>Identificador de uma célula</title>
 
       Utilizamos para criar o <b>identificador do nó</b>
@@ -79,14 +64,14 @@
 
       Pelo fato da função $id$ ser injetiva pela <ref to="unicidade-id-no" />
 
-    <proposition collapsible="true" id="unicidade-id-no">
-      <title>Injetividade do Identificador de cada nó</title>
+      <proposition collapsible="true" id="unicidade-id-no">
+        <title>Injetividade do Identificador de cada nó</title>
 
-      Dada a função de identificação de um nó $f: I \times J \rightarrow \mathbb{N}$ definida por
+        Dada a função de identificação de um nó $f: I \times J \rightarrow \mathbb{N}$ definida por
 
-      <equation>id(i, j) = (i - 1)n + j</equation>
+        <equation>id(i, j) = (i - 1)n + j</equation>
 
-      Onde $n \in \mathbb{N}$ é a dimensão da matriz e $1 \le j_1, j_2 \le n$. Temos que <m>id</m> é uma <b>função injetiva</b>.
+        Onde $n \in \mathbb{N}$ é a dimensão da matriz e $1 \le j_1, j_2 \le n$. Temos que <m>id</m> é uma <b>função injetiva</b>.
 
         <proof collapsed="true" collapsible="true">
           Suponha que $id(i_1, j_1) = id(i_2, j_2)$. Provaremos que $i_1 = i_2$ e $j_1 = j_2$.
@@ -122,20 +107,17 @@
         </proof>
       </proposition> 
 
-      A função foi implementada no módulo <c>calcular_id_no
-.m</c>
+      A função foi implementada no módulo <c>calcular_id_no.m</c>
 
       <code lines="false" lang="matlab">
-      function id = calcular_id_no(n, i, j)
-        id = (i - 1) * n + j;
-      end
+        function id = calcular_id_no(n, i, j)
+          id = (i - 1) * n + j;
+        end
       </code>
-
     </subsection>
 
     <subsection numbered="false" id="parte2-b">
-      <eyebrow>item b)</eyebrow>
-      <title>Centro de cada célula</title>
+      <title>Calculando o centro de cada célula</title>
 
       Obtemos a exata posição do centro da célula <m>(i, j)</m> calculando:
 
@@ -154,28 +136,13 @@
         \\ &= \frac{H}{c_y} = \frac{740}{41} \approx 18 \text{px}\\
       </equations> -->
 
-      <figure src="./images/exemplo_celula_centro.png" alt="Ilustracao do centro da celula">
-        <caption>Centro de uma célula</caption>
-      </figure>
-
       <box type="warning">
         <title>O centro não pode ser exato</title> 
         Note que tanto <m>\Delta{x}</m> e <m>\Delta{y}</m> são valores retirados pela média considerandos que os pixels
         estão uniformemente espaçados, mas isso não impede de termos valores decimais que não podem ser representados por 
         pixels. 
       </box>
-
-      <figure src="./images/exemplo_deltas.png" alt="Ilustracao do centro da celula">
-        <caption>Podemos observar uma zona de pixels que podem determinar o centro de célula</caption>
-      </figure>
-
-      <figure src="./images/exemplo_percorrer_celulas.png" alt="Ilustracao do centro da celula">
-        <caption>Podemos observar uma zona de pixels que podem determinar o centro de célula</caption>
-      </figure>
-
-      <subsubsection>
-        <title>Calculo do centro da <m>(i, j)</m>-célula</title>
-
+     
         Como cada célula ocupa cerca de <m>\Delta{x}</m>, <m>\Delta{y} \approx 18</m> px o seu centro terá 
         a posição relativa <m>\frac{\Delta{x}}{2}</m>, <m>\frac{\Delta{y}}{2}</m> em relação a tela. Para determinar sua posição
         absoluta em relação a imagem, temos que contar a posição da <m>(i, j)</m>-célula, que será equivalente a quantidade de pixels
@@ -185,7 +152,6 @@
         <equations id="x-centro">
           (i - 1) \cdot \Delta{x} + \Delta{x} / 2 &= i \cdot \Delta{x} - \Delta{x} / 2 \\ 
           & \Rightarrow X(i) = \lfloor i \cdot \Delta{x} - \Delta{x} / 2 \rfloor
-
         </equations>
 
         De forma análoga a <ref to="x-centro" >Equação 7</ref>, temos que
@@ -214,49 +180,45 @@
             y_centro = round((i - 0.5) * delta_y);
           end
         </code>
-      </subsubsection>
+    </subsection>
+    <subsection numbered="false" id="subsec:parte2-c">
+      <title>Obtendo os caminhos livres horizontais</title>
 
+      O maior problema que temos para verificar a passagem de um labirinto é lidar com o tamanho da imagem
+      com o tamanho dos blocos do labirinto. Para termos uma métrica de distância entre células adotamos o centro
+      de um bloco\célula através de <m>X(i)</m>, <m>Y(j)</m> das Equações <ref to="x-centro" >7</ref>, <ref to="y-centro" />.
+      
+      A idéia para verificar se há uma passagem entre pares de
+      células e comparar se os dois centro são caminhos livres. Mas isso pode ocasionar em falsos caminhos livres, então
+      faremos a verificação se todos os pixels entre cada centro são todos pretos
 
-      <subsection numbered="false" id="parte2-c">
-        <eyebrow>item c)</eyebrow>
-        <title>Obtendo os caminhos livres horizontais</title>
+      <box>
+        <title>Custo computacional da Verificação</title>
+        Note que na verificação <c>all(linhas_pixels == 1)</c> possui custo da forma <m>O(\Delta x)</m> que é pior 
+        que <m>O(1)</m>: alternativa que comparamos apenas os centros de cada bloco, mas como <m>\Delta x</m> na prática é pequeno, temos que 
+        <m>O(\Delta{x}) \sim O(1)</m>.
+      </box>
+      
+      <code lines="false" lang="matlab">
+        function tem_passagem = verificar_passagem_horizontal(B, i, j1, j2, n_celulas)
+          if nargin < 5 || isempty(n_celulas)
+            n_celulas = 41;
+          endif
 
-        O maior problema que temos para verificar a passagem de um labirinto é lidar com o tamanho da imagem
-        com o tamanho dos blocos do labirinto. Para termos uma métrica de distância entre células adotamos o centro
-        de um bloco\célula através de <m>X(i)</m>, <m>Y(j)</m> das Equações <ref to="x-centro" >7</ref>, <ref to="y-centro" />.
-        
-        A idéia para verificar se há uma passagem entre pares de
-        células e comparar se os dois centro são caminhos livres. Mas isso pode ocasionar em falsos caminhos livres, então
-        faremos a verificação se todos os pixels entre cada centro são todos pretos
+          [x1, y1] = calcular_centro_celula(B, i, j1, n_celulas);
+          [x2, ~] = calcular_centro_celula(B, i, j2, n_celulas);
 
-        <box>
-          <title>Custo computacional da Verificação</title>
-          Note que na verificação <c>all(linhas_pixels == 1)</c> possui custo da forma <m>O(\Delta x)</m> que é pior 
-          que <m>O(1)</m>: alternativa que comparamos apenas os centros de cada bloco, mas como <m>\Delta x</m> na prática é pequeno, temos que 
-          <m>O(\Delta{x}) \sim O(1)</m>.
-        </box>
-        
-        <code lines="false" lang="matlab">
-          function tem_passagem = verificar_passagem_horizontal(B, i, j1, j2, n_celulas)
-            if nargin < 5 || isempty(n_celulas)
-              n_celulas = 41;
-            endif
+          x_inicio = min(x1, x2);
+          x_fim = max(x1, x2);
 
-            [x1, y1] = calcular_centro_celula(B, i, j1, n_celulas);
-            [x2, ~] = calcular_centro_celula(B, i, j2, n_celulas);
+          linha_pixel = B(y1, x_inicio:x_fim);
+          tem_passagem = all(linha_pixel == 1);
+        end
 
-            x_inicio = min(x1, x2);
-            x_fim = max(x1, x2);
+      </code>
+    </subsection>
 
-            linha_pixel = B(y1, x_inicio:x_fim);
-            tem_passagem = all(linha_pixel == 1);
-          end
-
-        </code>
-      </subsection>
-
-      <subsection numbered="false" id="parte2-d">
-        <eyebrow>item d)</eyebrow>
+      <subsection numbered="false" id="subsec:parte2-d">
         <title>Obtendo os caminhos livres verticais</title>
 
         De forma semelhante a <ref to="parte2-c" >caminhos livres horizontais</ref> implementamos
@@ -280,122 +242,177 @@
         </code>
       </subsection>
 
-      <subsection id="parte2-e">
-        <eyebrow>item e)</eyebrow>
-        <title>Criando o conjunto de arestas do labirinto</title>
-        
-        Criamos o conjunto de arestas do labirinto apenas ligando os caminhos livres. As arestas
-        podem ser separadas por dois subconjuntos de caminhos livres sendo eles o da horizontal e vertical do labirinto. 
-        Combinando os métodos visto em <ref to="parte2-e" /> e <ref to="parte2-d" />
-        
-        <list>
-          <item> <c>verificar_passagem_horizontal</c>: Verificará todos os pares de vértices na horizontal </item>;
-          <item><c>verificar_passagem_vertical</c>: Veriicará todos os pares de vértices na vertical </item>
-        </list>
+    <subsection numbered="false" id="parte2-e">
+      <title>Criando o conjunto de arestas do labirinto</title>
+      
+      Criamos o conjunto de arestas do labirinto apenas ligando os caminhos livres. As arestas
+      podem ser separadas por dois subconjuntos de caminhos livres sendo eles o da horizontal e vertical do labirinto. 
+      Combinando os métodos visto na <ref to="subsec:parte2-c" /> e <ref to="subsec:parte2-d" />
+      
+      <list>
+        <item> <c>verificar_passagem_horizontal</c>: Verificará todos os pares de vértices na horizontal </item>;
+        <item><c>verificar_passagem_vertical</c>: Veriicará todos os pares de vértices na vertical </item>.
+      </list>
 
-        <code lines="false" lang="matlab">
-          function [arestas, qtd_arestas] = obter_arestas(B, n_celulas)
-            if nargin < 2 || isempty(n_celulas)
-              n_celulas = 41;
-            end
-
-            n = n_celulas;
-
-            max_arestas = 2 * n^2; % Total de arestas possíveis
-            arestas_temp = zeros(max_arestas, 2);
-            qtd_arestas = 0;
-
-            for i = 1:n
-              for j = 1:n
-                if j < n
-                  if verificar_passagem_horizontal(B, i, j, j + 1, n)
-                    id_u = calcular_id_no(n, i, j);
-                    id_v = calcular_id_no(n, i, j + 1);
-                    qtd_arestas = qtd_arestas + 1;
-
-                    arestas_temp(qtd_arestas, :) = [id_u, id_v];
-                  endif
-                endif
-                if i < n
-                  if verificar_passagem_vertical(B, i, i + 1, j, n)
-                    id_u = calcular_id_no(n, i, j);
-                    id_v = calcular_id_no(n, i + 1, j);
-                    qtd_arestas = qtd_arestas + 1;
-
-                    arestas_temp(qtd_arestas, :) = [id_u, id_v];
-                  endif
-                endif
-              end
-            end
-
-            arestas = arestas_temp(1:qtd_arestas, :);
+      <code lines="false" lang="matlab">
+        function [arestas, qtd_arestas] = obter_arestas(B, n_celulas)
+          if nargin < 2 || isempty(n_celulas)
+            n_celulas = 41;
           end
-        </code>
-      </subsection>
 
+          n = n_celulas;
+
+          max_arestas = 2 * n^2; % Total de arestas possíveis
+          arestas_temp = zeros(max_arestas, 2);
+          qtd_arestas = 0;
+
+          for i = 1:n
+            for j = 1:n
+              if j < n
+                if verificar_passagem_horizontal(B, i, j, j + 1, n)
+                  id_u = calcular_id_no(n, i, j);
+                  id_v = calcular_id_no(n, i, j + 1);
+                  qtd_arestas = qtd_arestas + 1;
+
+                  arestas_temp(qtd_arestas, :) = [id_u, id_v];
+                endif
+              endif
+              if i < n
+                if verificar_passagem_vertical(B, i, i + 1, j, n)
+                  id_u = calcular_id_no(n, i, j);
+                  id_v = calcular_id_no(n, i + 1, j);
+                  qtd_arestas = qtd_arestas + 1;
+
+                  arestas_temp(qtd_arestas, :) = [id_u, id_v];
+                endif
+              endif
+            end
+          end
+
+          arestas = arestas_temp(1:qtd_arestas, :);
+        end
+    </code>
     </subsection>
   </section>
-
-  <section numbered="false" id="parte3">
-    <eyebrow>Parte 3</eyebrow>
-    <title>Visualização do grafo</title>
-
-    Na parte da visualização utilizamos todos os métodos criado a partir da <ref to="parte3" />
-    
-  </section>
-
   <section id="parte5" numbered="false">
-    <eyebrow>Parte 5</eyebrow>
-    <title>Algoritmo Dijkstra</title>
+      <eyebrow>Parte 5</eyebrow>
+      <title>Algoritmo Dijkstra</title>
 
-    O algoritmo Dijkstra é uma algoritmo que adota uma estratégia <b>gulosa</b> para 
-    determinar o caminho mínimo entre dois pares de vértices de um grafo <m>G</m>. Diferentemente
-    do <ref to="thm:id" >Algoritmo de Floyd-Marshall</ref> ele determina o caminho mínimo entre um
-    único vértice.
+      O <b>Algoritmo de Dijkstra</b> é adota uma estratégia <b>gulosa</b> para 
+      determinar o caminho mínimo a partir de um único vértice de origem <m>s</m> até todos os outros 
+      vértices de um grafo <m>G = (V, E)</m>.
 
-    O algoritmo começa definindo as distâncias de cada arestas, que no nosso caso é o custo <m>c_{uv} = 1</m>,
-    que nos diz que para toda aresta que nos movermos nas direções <m>\leftarrow, \uparrow, \rightarrow, \downarrow</m>.
-    Inicializamos primeiro com o nó de origem com custo <m>0</m>, e os demais vértices com custo 
-    <m>\infty</m>, depois marcamos todos os nós como <b>não visitados</b>. A estratégia gulosa está em pegar
-    a menor distância de um vértice.
+      O algoritmo inicializa definindo o custo das transições entre células. No nosso labirinto, cada movimento 
+      nas direções cardinais <m>\leftarrow, \uparrow, \rightarrow, \downarrow</m> possui custo unitário <m>c_{uv} = 1</m>. 
+      Atribuímos à origem <m>s</m> a distância inicial <m>dist(s) = 0</m> e a todos os demais vértices 
+      <m>dist(v) = \infty</m>(como por exemplo na <ref to="fig:dijkstra-passos"></ref>). 
 
-    <code lang="matlab" lines="false">
-      function [dist, anterior] = dijkstra(A, s)
-        N = size(A, 1);
+      <figure id="fig:dijkstra-passos" src="./images/Inicialização.png">
+          <caption classification="Figure">Sequência de passos do Algoritmo de Dijkstra ilustrando o processo de seleção de nós, análise de arestas vizinhas e o relaxamento de distâncias.</caption>
+      </figure>
+
+      O coração do algoritmo reside no processo de <b>relaxamento das arestas</b>. Para cada vértice <m>u</m> 
+      extraído da fila de prioridades, inspecionamos todos os seus vizinhos <m>v</m> acessíveis. A condição:
+      
+      <equation id="eq:dist">dist(u) + A(u, v) < dist(v)</equation>
+
+      Verifica se a rota que passa por <m>u</m> oferece um caminho mais curto até <m>v</m> do que qualquer outro 
+      caminho anteriormente encontrado. Caso essa desigualdade seja satisfeita, atualizamos a menor distância conhecida 
+      <m>dist(v) \gets dist(u) + A(u, v)</m> e registramos o predecessor <m>anterior(v) \gets u</m>, permitindo a 
+      reconstrução exata do trajeto ótimo ao final da execução.
+
+      <code lang="matlab" lines="false">
+        function [dist, anterior] = dijkstra(A, s)
+          N = size(A, 1);
 
           dist = Inf(N, 1);
-            anterior = zeros(N, 1);
+          anterior = zeros(N, 1);
 
-            dist(s) = 0;
+          dist(s) = 0;
 
-            heap_distancias = zeros(N * 4, 2);
-            heap_tamanho = 0;
+          heap_distancias = zeros(N * 4, 2);
+          heap_tamanho = 0;
 
-            [heap_distancias, heap_tamanho] = heap_push(heap_distancias, heap_tamanho, 0, s);
+          [heap_distancias, heap_tamanho] = heap_push(heap_distancias, heap_tamanho, 0, s);
 
-            while heap_tamanho > 0
-              [heap_distancias, heap_tamanho, d_u, u] = heap_pop(heap_distancias, heap_tamanho);
+          while heap_tamanho > 0
+            % Extrai o nó de menor distância atual O(log V)
+            [heap_distancias, heap_tamanho, d_u, u] = heap_pop(heap_distancias, heap_tamanho);
 
-              if d_u > dist(u)
-                continue;
+            % Descarta registros desatualizados da heap
+            if d_u > dist(u)
+              continue;
+            endif
+
+            % Relaxamento das arestas dos vizinhos de u
+            vizinhos = find(A(u, :));
+            for v = vizinhos
+              peso = A(u, v);
+              nova_dist = dist(u) + peso;
+
+              % Condição de Relaxamento: Encontrou um caminho mais curto até v?
+              if nova_dist < dist(v)
+                dist(v) = nova_dist;
+                anterior(v) = u; % Registra o predecessor para o backtracking
+
+                [heap_distancias, heap_tamanho] = heap_push(heap_distancias, heap_tamanho, nova_dist, v);
               endif
+            endfor
+          endwhile
+        end
+      </code>
 
-              vizinhos = find(A(u, :));
-              for v = vizinhos
-                peso = A(u, v);
-                nova_dist = dist(u) + peso;
+      Então implementamos o método <c>dijkstra</c> que utiliza a estrutura de um Min-Heap para reduzirmos a complexiade com auxilio dos métodos <c>heap_push</c> e <c>heap_pop</c> (métodos de remoção e inserção de um Heap Binário). Todo o algoritmo
+      pode ser discretizado nas seguintes etapas:
 
-                if nova_dist < dist(v)
-                  dist(v) = nova_dist;
-                  anterior(v) = u;
+      <list>
+          <item><b>Inicialização das Estruturas:</b> Atribuição das distâncias acumuladas iniciais e inicialização dos seletores em tempo <m>\mathcal{O}(|V|)</m>.</item>
+          <item><b>Extração do Vértice Mínimo (<c>heap_pop</c>):</b> Remoção do elemento de menor distância temporária da fila de prioridades, realizada exatamente uma vez por vértice processado, totalizando <m>|V|</m> execuções.</item>
+          <item><b>Relaxamento das Arestas (<c>heap_push</c>):</b> Atualização das distâncias estimadas dos vértices adjacentes e subsequente reorganização da estrutura hierárquica, executada no máximo uma vez para cada aresta incidente, totalizando até <m>|E|</m> atualizações.</item>
+      </list>
 
-                  [heap_distancias, heap_tamanho] = heap_push(heap_distancias, heap_tamanho, nova_dist, v);
-                endif
-              endfor
-            endwhile
-          end
-    </code>
+      <box>
+        <title>A Estrutura de Dados Min-Heap Bidimensional</title>
+        A Min-Heap foi implementada utilizando uma matriz de dimensão <m>M \times 2</m> para atuar como uma <b>Fila de Prioridades</b> de alta performance no Octave. 
+        A primeira coluna armazena a <b>distância acumulada <m>d</m></b> (utilizada como chave de ordenação para manter a menor distância na raiz), enquanto a segunda coluna armazena o <b>identificador do vértice <m>u</m></b> associado. 
+        Essa representação matricial contígua substitui o uso de <c>structs</c> pesadas e permite trocas de linhas diretas na memória, garantindo que as operações de inserção (<c>heap_push</c>) e remoção do mínimo (<c>heap_pop</c>) sejam executadas de forma otimizada em tempo <m>\mathcal{O}(\log |V|)</m>.
+      </box>
 
+      <subsection numbered="false" id="subsec:parte-6">
+        <title>Reconstrução do caminho e resultados</title>
+        Para refazermos o caminho, como cada vértice aponta para seu <b>pai</b> pela pelo método <c>anterior</c>, então implementamos o módulo <c>reconstruir_caminho.m</c> para reconstruir qualquer caminho.
 
+        <code lang="matlab" lines="false">
+        function caminho = reconstruir_caminho(anterior, s, t)
+          caminho = [];
+          v = t;
+
+          while v ~= 0
+            caminho = [v, caminho];
+
+            if v == s
+              break;
+            endif
+
+            v = anterior(v);
+          endwhile
+
+          if isempty(caminho) || caminho(1) ~= s
+            caminho = [];
+          endif
+        end
+        </code>
+
+        Portanto os resultados obtidos através da implementações <c>dijkstra</c> e <c>reconstruir_caminho</c> confirmam a eficiência e a exatidão do Algoritmo de Dijkstra integrado à reconstrução do caminho. Para a malha discretizada do labirinto, o trajeto ótimo foi determinado com os seguintes resultados:
+
+        <list>
+          <item><b>Custo do caminho mínimo:</b> <m>246</m> unidades;</item>
+          <item><b>Movimentos realizados:</b> <m>246</m> movimentos ortogonais;</item>
+          <item><b>Quantidade de vértices no caminho:</b>: <m>247</m> vértices;</item>
+          <item><b>Tempo de uma única execução:</b> <m>\approx 0,106</m> segundos;</item>
+          <item><b>Tempo médio (20 execuções):</b> <m>\approx 0,0916</m> segundos.</item>
+        </list>  
+        
+      </subsection>
   </section>
 </document>

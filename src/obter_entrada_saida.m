@@ -4,7 +4,7 @@ function [s, t, pos_s, pos_t] = obter_entrada_saida(B, n_celulas)
   endif
 
   n = n_celulas;
-  [livres, ~, ~, ~] = obter_info_caminhos_paredes(B, n);
+  [livres, ~, ~, ~] = extrair_caminhos_e_paredes(B, n);
 
   i = ceil(livres / n);
   j = livres - (i - 1) * n;
@@ -16,9 +16,9 @@ function [s, t, pos_s, pos_t] = obter_entrada_saida(B, n_celulas)
     error("Esperava-se 2 celulas livres na borda (entrada e saida). Encontrado %d.", numel(ids_borda));
   endif
 
-  s = ids_borda(1);   % menor id: entrada
-  t = ids_borda(2);   % maior id: saida
+  s = ids_borda(1);
+  t = ids_borda(2);
 
-  pos_s = [ceil(s / n), s - (ceil(s / n) - 1) * n];   % [linha, coluna]
+  pos_s = [ceil(s / n), s - (ceil(s / n) - 1) * n];
   pos_t = [ceil(t / n), t - (ceil(t / n) - 1) * n];
 end

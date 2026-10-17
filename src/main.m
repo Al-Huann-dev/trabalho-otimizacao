@@ -26,17 +26,18 @@ fprintf("Quantidade de arestas %d\n", qtd_arestas);
 fprintf("Quantidade de vértices %d\n", qtd_vertices);
 
 % Parte 3 - Visualização do grafo (itens a, b e c) e Parte 4 - Formulação como problema de caminho mínimo (item a)
-[s,t,~,~] = obter_entrada_saida(B, n)
-visualizar_grafo(B, arestas, vertices, s, t, n) 
+% [s, t, pos_s, pos_t] = obter_entrada_saida(B, n);
+% visualizar_grafo(B, arestas, vertices, s, t, n);
 
-
+% fprintf(pos_s);
+% fprintf(pos_t);
 % Parte 5 - Dijkstra
 
 N = n^2;
 u = arestas(:, 1);
 v = arestas(:, 2);
 
-A = sparse([u ; v], [v ; u], 1, N, N);
+A = sparse([u; v], [v; u], 1, N, N);
 
 s_coord = [2, 1];
 t_coord = [40, 41];
@@ -52,6 +53,7 @@ fprintf("Tempo estimado de 1 execução: %.3f\n", tempo);
 
 amostras = 20;
 tic;
+
 for r = 1:amostras
   dijkstra(A, s);
 end
@@ -64,7 +66,7 @@ caminho = reconstruir_caminho(anterior, s, t);
 % Parte 6 \ itens a), b), c) e d)
 fprintf("Custo do caminho mínimo: %d\n", dist(t));
 fprintf("Movimentos realizados: %d\n", numel(caminho) - 1);
-fprintf("Vertices no caminho: %d\n", numel(caminho));
+fprintf("Número de Vértices do caminho: %d\n", numel(caminho));
 fprintf("Tempo do Dijkstra(com min-heap): %.3f\n (1 execução) | %.4f s (media de %d)\n", tempo, tempo_medio, amostras);
 
 % Parte 7- Caminho mínimo sobre a imagem
@@ -72,21 +74,17 @@ fprintf("Tempo do Dijkstra(com min-heap): %.3f\n (1 execução) | %.4f s (media 
 % (a) labirinto original
 figure; imshow(img); title("Labirinto original");
 
- 
-% imagem binaria 
+% imagem binaria
 figure; imshow(B); title("Imagem binaria (1 = livre, 0 = parede)");
-
 
 % (b) grafo construído sobre o labirinto
 figure; visualizar_grafo(img, arestas, vertices, s, t, n);
 title("Grafo sobre o labirinto");
 
- 
 % (c) apenas o caminho minimo sobre o labirinto
 figure; visualizar_grafo(img, arestas, vertices, s, t, n, caminho, false);
 title(sprintf("Caminho minimo (%d movimentos)", numel(caminho) - 1));
 
- 
 % (d) grafo completo com o caminho destacado
 figure; visualizar_grafo(img, arestas, vertices, s, t, n, caminho, true);
 title("Grafo completo com o caminho minimo destacado");

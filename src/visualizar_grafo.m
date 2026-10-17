@@ -12,8 +12,8 @@ function visualizar_grafo(img, arestas, vertices, s, t, n_celulas, caminho)
   y_c = zeros(n^2, 1);
   for i = 1:n
     for j = 1:n
-      id = obter_id_no(n, i, j);
-      [x_c(id), y_c(id)] = obter_centro_celula(img, i, j, n);
+      id = calcular_id_no(n, i, j);
+      [x_c(id), y_c(id)] = calcular_centro_celula(img, i, j, n);
     end
   end
 
