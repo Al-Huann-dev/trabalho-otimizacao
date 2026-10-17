@@ -5,7 +5,7 @@
   theme-mode="light"
   theme-accent="purple"
 >
-  <title>Trabalho de Otimização Linear</title>
+  <title>Lista Computacional 2 - Relatório</title>
   <meta>
     <meta-item key="instituição">IMPA Tech</meta-item>
     <meta-item key="data">3 de Outubro de 2026</meta-item>
@@ -27,26 +27,115 @@
 
   <section id="parte1" numbered="false">
     <eyebrow>Parte 1</eyebrow>
-    <title>Transformando o problema em matrizes</title>
+    <title>Leitura e processamento da imagem</title>
 
-    <intro>Nessa parte ficamos responsáveis por tratar todo o dado do projeto.</intro>
+
+    <intro>Nesta seção, realizamos a transformação da imagem original em uma imagem binária, bem como 
+    identificamos a entrada e a saída do labirinto.
+    </intro>
 
     <subsection numbered="false" id="subsec:transformadados">
       <title>Transformando a imagem na matriz</title>
-
+      Para transformação da imagem original na imagem binária, utilizamos a 
+      matriz fornecida pela atividade:
       <equation by="huann"  id="eq-celula" numbered="false">
-        B(i, j) := \text{Célula da (i, j) cor }
+        B(i,j) = \begin{cases} 
+                  1, & \text{se o pixel pertence a uma região livre,} \\
+                  0, & \text{se o pixel pertence a uma parede.}
+                  \end{cases}   
       </equation>
+      E o código:
+      <code lang="MATLAB">
+        function B = carregar_imagem_binaria(caminho_arquivo)
+          pkg load image
 
-      <comment on="eq-celula" status="resolved">Tem que avaliar qual o teorema que prova essa afirmação!</comment>
-    </subsection>
+          if nargin < 1 || isempty(caminho_arquivo)
+            caminho_arquivo = "labirinto.jpeg";
+          endif
 
-    <subsection id="subsection:parte1" numbered="false" >
-      <title>Parte 1 - Leitura e Processamento dos dados</title>
+          img = imread(caminho_arquivo);
 
-      <intro>Nessa etapa tratamos os dados para a matriz</intro>
-      
-    </subsection>
+          if size(img, 3) == 3
+            img = rgb2gray(img);
+          endif
+
+          limiar = 128;
+
+          B_temp = img > limiar;
+
+          [linhas_pretas, colunas_pretas] = find(B_temp == 0);
+
+          y_min = min(linhas_pretas);
+          x_min = min(colunas_pretas);
+          y_max = max(linhas_pretas);
+          x_max = max(colunas_pretas);
+
+          B = B_temp(y_min:y_max, x_min:x_max);
+
+          imwrite(B, "labirinto_41x41.png");
+        end
+
+      </code>
+      Como pode ser visto, a leitura da imagem foi realizada por meio da função 
+      <c lang='matlab'>imread</c>. Caso ela viesse em <c>RGB</c>, era convertida 
+      para escala de cinza utilizando a função <c>rgb2gray</c>. Utilizamos um limiar
+      de $128$ pois ele representa o ponto médio da escala cinza de $8 \ bits$, a qual
+      varia de $0$ = preto absoluto a $255$ = branco absoluto (ponto médio = $\frac{0+255}{2} = 127.5 \approx 128$). Como há um grande contraste 
+      na imagem (paredes pretas e corredores brancos), o limiar realiza a binarização
+      de forma satisfatória. Obtemos, então, a nossa matriz $B$ de binarização:
+      <equation by="huann"  id="eq-celula" numbered="false">
+        B(i,j) = \begin{cases} 
+                  1, & \text{se } I(i,j) > 128 \\
+                  0, & \text{caso contrário}
+                  \end{cases}   
+      </equation>
+      Nesta matriz, o valor $1$ representa um pixel de corredor, o que equivale à cor branca. Já 
+      o valor $0$ representa um pixel de parede, o que equivale à cor preta.
+  </subsection>
+  Além disso, após <i>croppar</i> a imagem, identificamos a entrada como o primeiro bloco branco da borda esquerda do labirinto e a saída como primeiro bloco branco 
+  da borda direita do labirinto (durante o desenvolvimento do trabalho, utilizaremos uma 
+  <hint>
+    <title>função</title> 
+    <code lang="MATLAB">
+    function [s, t, pos_s, pos_t] = obter_entrada_saida(B, n_celulas)
+      if nargin < 2 || isempty(n_celulas)
+        n_celulas = 41;
+      endif
+
+      n = n_celulas;
+      [livres, ~, ~, ~] = obter_info_caminhos_paredes(B, n);
+
+      i = ceil(livres / n);
+      j = livres - (i - 1) * n;
+
+      na_borda = (i == 1) | (i == n) | (j == 1) | (j == n);
+      ids_borda = livres(na_borda);
+
+      if numel(ids_borda) ~= 2
+        error("Esperava-se 2 celulas livres na borda (entrada e saida). Encontrado %d.", numel(ids_borda));
+      endif
+
+      s = ids_borda(1);   % menor id: entrada
+      t = ids_borda(2);   % maior id: saida
+
+      pos_s = [ceil(s / n), s - (ceil(s / n) - 1) * n];   % [linha, coluna]
+      pos_t = [ceil(t / n), t - (ceil(t / n) - 1) * n];
+    end 
+      </code>
+    </hint> para identificá-los com <c>id</c> e posição em coordenadas). 
+
+  <figure src="./src/labirinto_original.png">
+    <caption>
+      Imagem original do labirinto
+    </caption>
+  </figure>
+
+  <figure src="./src/labirinto_binario.png">
+    <caption>
+      Imagem binária obtida do labirinto
+    </caption>
+  </figure>
+
   </section>
 
   <comment on="unicidade-id-no" by="gemini" status="open" >Verificar se é necessário, para o projeto.</comment>
@@ -62,7 +151,7 @@
 
       <equation id="id-no">id(i , j) = (i - 1)n + j</equation>
 
-      Pelo fato da função $id$ ser injetiva pela <ref to="unicidade-id-no" />
+      Pelo fato de a função $id$ ser injetiva pela <ref to="unicidade-id-no" />
 
       <proposition collapsible="true" id="unicidade-id-no">
         <title>Injetividade do Identificador de cada nó</title>
@@ -145,9 +234,9 @@
      
         Como cada célula ocupa cerca de <m>\Delta{x}</m>, <m>\Delta{y} \approx 18</m> px o seu centro terá 
         a posição relativa <m>\frac{\Delta{x}}{2}</m>, <m>\frac{\Delta{y}}{2}</m> em relação a tela. Para determinar sua posição
-        absoluta em relação a imagem, temos que contar a posição da <m>(i, j)</m>-célula, que será equivalente a quantidade de pixels
+        absoluta em relação à imagem, temos que contar a posição da <m>(i, j)</m>-ésima célula, que será do equivalente à quantidade de pixels
         a sua esquerda e acima, dada por <m>(i - 1)  \times \Delta{x}</m> e <m>(j -1) \times \Delta{y}</m> e somar a posição relativa 
-        centro, resultando nas seguintes expressões para calcular o centro da célula:
+        do centro, resultando nas seguintes expressões para calcular o centro da célula:
 
         <equations id="x-centro">
           (i - 1) \cdot \Delta{x} + \Delta{x} / 2 &= i \cdot \Delta{x} - \Delta{x} / 2 \\ 
@@ -185,11 +274,11 @@
       <title>Obtendo os caminhos livres horizontais</title>
 
       O maior problema que temos para verificar a passagem de um labirinto é lidar com o tamanho da imagem
-      com o tamanho dos blocos do labirinto. Para termos uma métrica de distância entre células adotamos o centro
+      e com o tamanho das células do labirinto. Para termos uma métrica de distância entre células adotamos o centro
       de um bloco\célula através de <m>X(i)</m>, <m>Y(j)</m> das Equações <ref to="x-centro" >7</ref>, <ref to="y-centro" />.
       
-      A idéia para verificar se há uma passagem entre pares de
-      células e comparar se os dois centro são caminhos livres. Mas isso pode ocasionar em falsos caminhos livres, então
+      A ideia para verificar se há uma passagem entre pares de
+      células e comparar se os dois centro são caminhos livres. Mas isso pode ocasionar falsos caminhos livres, então
       faremos a verificação se todos os pixels entre cada centro são todos pretos
 
       <box>
@@ -294,11 +383,130 @@
     </code>
     </subsection>
   </section>
+
+  <section numbered="false" id="parte3">
+    <eyebrow>Parte 3</eyebrow>
+    <title>Visualização do grafo</title>
+    <code lang='matlab'>
+    function visualizar_grafo(img, arestas, vertices, s, t, n_celulas, caminho)
+      if nargin < 7
+        caminho = [];
+      endif
+      if nargin < 8 || isempty(mostrar_grafo)
+        mostrar_grafo = true;
+      endif
+      n = n_celulas;
+
+      % centro = (x = coluna, y = linha) de todas as celulas, indexado pelo id de cada nó
+      x_c = zeros(n^2, 1);
+      y_c = zeros(n^2, 1);
+      for i = 1:n
+        for j = 1:n
+          id = obter_id_no(n, i, j);
+          [x_c(id), y_c(id)] = obter_centro_celula(img, i, j, n);
+        end
+      end
+
+      imshow(img);
+      hold on;
+
+      % desenha todas as arestas em uma única chamada utlizando a estratégia dos 'NaNs'
+      if mostrar_grafo
+        u = arestas(:, 1);
+        v = arestas(:, 2);
+        X = [x_c(u)'; x_c(v)'; NaN(1, numel(u))];
+        Y = [y_c(u)'; y_c(v)'; NaN(1, numel(u))];
+        plot(X(:), Y(:), "-", "Color", [0.90 0.50 0.00], "LineWidth", 1);
+
+      % plota os vértices
+      plot(x_c(vertices), y_c(vertices), "o", "MarkerSize", 3, ...
+            "MarkerFaceColor", [0.25 0.25 0.25], "MarkerEdgeColor", "none");
+      endif
+
+      if ~isempty(caminho)
+        plot(x_c(caminho), y_c(caminho), "-", "Color", [0.85 0.00 0.00], "LineWidth", 2.5);
+      endif
+
+      % entrada com cor verde e saída com cor azul, como sugerido na atividade
+      plot(x_c(s), y_c(s), "s", "MarkerSize", 5, "MarkerFaceColor", [0.00 0.65 0.00], "MarkerEdgeColor", "k");
+      plot(x_c(t), y_c(t), "s", "MarkerSize", 5, "MarkerFaceColor", [0.00 0.20 0.90], "MarkerEdgeColor", "k");
+
+      hold off;
+    end
+    </code>
+    Para realizarmos a visualização do grafo, a função <c>visualizar_grafo</c> desenha o grafo
+    sobre a própria imagem, utilizando as coordenadas dos centros das células. Os <b>vértices</b>
+    são representados por meio de um ponto cinza no centro de cada uma das células livres. As <b>arestas</b>
+    são representadas por meio de um segmento laranja entre os centros de cada par de células livres ligadas.
+    Todos os segmentos foram traçados em uma única chamada da função <c>plot</c>, por meio da estratégia
+    dos <c>NaN</c>. A sua utilização permite renderizar todas as arestas do grafo numa única chamada, 
+    eliminando a necessidade de ciclos <c>for</c>: como o MATLAB interpreta o <c>NaN</c> como um ponto de descontinuidade 
+    (interrompendo a linha sem conectar arestas distintas), foi possível organizar as coordenadas num único vetor 
+    intercalado ($[X_1, X_2, \text{NaN}, \dots]$). Esta abordagem de vetorização reduz drasticamente o tempo de 
+    execução e o custo computacional de renderização, sendo essencial para garantir a eficiência do código em grafos 
+    de grande escala. Já em relação à <b>entrada</b> e à <b>saída</b>, identificamos elas por meio de quadrados maiores, 
+    com cor verde e cor azul, respectivamente, como foi sugerido na atividade. 
+    <figure src='./src/grafo_sobre_labirinto.png'>
+      <caption> Grafo desenhado sobre o labirinto</caption>
+    </figure>   
+    Podemos verificar visualmente de forma direta que nenhuma aresta cruza uma região preta. Isso já é garantido pela construção
+    que realizamos, em que uma aresta só existe quando todos os pixels do segmento entre os vértices que a compõem são brancos. 
+  </section>
+  <section id='parte4' numbered='false'>
+    <eyebrow>Parte 4</eyebrow>
+    <title>Formulação como problema de caminho mínimo</title>
+    <definition id="def:id">
+      <title>Caminho mínimo</title>
+      Seja $G = (V,E)$ o grafo do labirinto, $s$ a entrada e $t$ a saída. O <b>caminho mínimo</b> 
+      entre $s$ e $t$ é o caminho $P = (s, v_1, v_2, ..., v_k, t)$ que minimiza
+      $$ C(P) = \sum_{e \in P} c_e, \qquad c_e = 1 \;\; \forall e \in E$$
+    </definition>
+    O primeiro passo para formularmos nosso problema como um problema de caminho mínimo é identificamos os 
+    vértices $s$ e $t$, os quais são as entrada e a saída do nosso labirinto, respectivamente. Esse feito é realizado
+    por meio da função <c>obter_entrada_saída</c>, a qual nos retorna os parâmetros <c>s</c> e <c>t</c>, os quais guardam 
+    os <c>ids</c> da entrada e da saída do nosso labirinto, e os parâmetros <c>pos_s</c> e <c>pos_t</c>, os quais armazenam
+    a posição desses vértices em coordenadas. 
+    <code lang='MATLAB'>
+    function [s, t, pos_s, pos_t] = obter_entrada_saida(B, n_celulas)
+      if nargin < 2 || isempty(n_celulas)
+        n_celulas = 41;
+      endif
+
+      n = n_celulas;
+      [livres, ~, ~, ~] = obter_info_caminhos_paredes(B, n);
+
+      i = ceil(livres / n);
+      j = livres - (i - 1) * n;
+
+      na_borda = (i == 1) | (i == n) | (j == 1) | (j == n);
+      ids_borda = livres(na_borda);
+
+      if numel(ids_borda) ~= 2
+        error("Esperava-se 2 celulas livres na borda (entrada e saida). Encontrado %d.", numel(ids_borda));
+      endif
+
+      s = ids_borda(1);   % menor id: entrada
+      t = ids_borda(2);   % maior id: saida
+
+      pos_s = [ceil(s / n), s - (ceil(s / n) - 1) * n];   % [linha, coluna]
+      pos_t = [ceil(t / n), t - (ceil(t / n) - 1) * n];
+    end
+    </code>
+    Ao rodarmos essa função, obtemos que $s$ é a célula $(2, 1)$, de id $42$, e $t$ é a célula $(40, 41)$, de id $1640$. 
+
+    De posse desses dados, podemos iniciar a formulação do nosso problema como problema de caminho mínimo. Mas, aqui caberia uma discussão: 
+    <subsection numbered='false'><i> <b>Por que podemos formulá-lo como problema de caminho mínimo?</b></i></subsection>
+    A resposta é simples: Como cada célula livre é um vértice e cada passagem entre células vizinhas é uma aresta, andar pelo labirinto é o mesmo que percorrer arestas. 
+    Então, ir da entrada à saída com o menor número de passos é achar o caminho de menor custo entre $s$ e $t$. Logo, podemos formulá-lo como problema de caminho mínimo.
+
+    Além disso, a interpretação de custo para esse problema seria que como todo movimento custa 1, $C(P)$ é o número de arestas do caminho, 
+    isto é, o número de movimentos realizados. Um caminho com $m$ vértices (contando $s$ e $t$) tem custo $m - 1$.
+  </section>
   <section id="parte5" numbered="false">
       <eyebrow>Parte 5</eyebrow>
       <title>Algoritmo Dijkstra</title>
 
-      O <b>Algoritmo de Dijkstra</b> é adota uma estratégia <b>gulosa</b> para 
+      O <b>Algoritmo de Dijkstra</b> adota uma estratégia <b>gulosa</b> para 
       determinar o caminho mínimo a partir de um único vértice de origem <m>s</m> até todos os outros 
       vértices de um grafo <m>G = (V, E)</m>.
 
@@ -381,7 +589,6 @@
       <subsection numbered="false" id="subsec:parte-6">
         <title>Reconstrução do caminho e resultados</title>
         Para refazermos o caminho, como cada vértice aponta para seu <b>pai</b> pela pelo método <c>anterior</c>, então implementamos o módulo <c>reconstruir_caminho.m</c> para reconstruir qualquer caminho.
-
         <code lang="matlab" lines="false">
         function caminho = reconstruir_caminho(anterior, s, t)
           caminho = [];
@@ -408,11 +615,46 @@
         <list>
           <item><b>Custo do caminho mínimo:</b> <m>246</m> unidades;</item>
           <item><b>Movimentos realizados:</b> <m>246</m> movimentos ortogonais;</item>
-          <item><b>Quantidade de vértices no caminho:</b>: <m>247</m> vértices;</item>
+          <item><b>Quantidade de vértices no caminho:</b> <m>247</m> vértices;</item>
           <item><b>Tempo de uma única execução:</b> <m>\approx 0,106</m> segundos;</item>
           <item><b>Tempo médio (20 execuções):</b> <m>\approx 0,0916</m> segundos.</item>
         </list>  
-        
       </subsection>
+  </section>
+  <section id='parte7' numbered='false'>
+    <eyebrow> Parte 7</eyebrow>
+    <title> Caminho mínimo sobre a imagem </title>
+    Após a realização de todos os algoritmos necessários, foi possível obter as seguintes visualizações:
+    <figure src='.\src\labirinto_original.png'>
+      <caption> Labirinto original</caption>
+    </figure>
+
+    <figure src='.\src\grafo_sobre_labirinto.png'>
+      <caption>Grafo sobre o labirinto</caption>
+    </figure>
+
+    <figure src='.\src\caminho_minimo.png'>
+      <caption> Caminho mínimo sobre o labirinto</caption>
+    </figure>
+
+    <figure src='.\src\grafo_e_caminho.png'> 
+      <caption> Grafo completo com o caminho mínimo destacado</caption>
+    </figure>
+    O grafo tem 801 vértices e 800 arestas, ou seja, uma aresta a menos que vértices. Um grafo conexo com essa propriedade é uma árvore: não tem ciclos, 
+    e entre quaisquer dois vértices existe um único caminho. Isso é esperado em um labirinto “perfeito”, onde todo corredor é alcançável e não há laços.
+
+    As consequências desse fato para o nosso problema são:
+    <list>
+      <item>
+        O caminho encontrado não só é o mais curto, mas é o único caminho possível entre $s$ e $t$, sem repetir vértices;
+      </item>
+      <item>
+        Qualquer busca (em largura, em profundidade ou Dijkstra) devolveria o mesmo caminho. O Dijkstra não era necessário para este labirinto, mas continua correto e serviria sem alteração se houvesse ciclos ou custos diferentes por aresta;
+      </item>
+      <item>
+        Os becos sem saída correspondem às folhas da árvore. O algoritmo os explora, mas eles não entram no caminho final.
+      </item>
+    </list>
+    O resultado final obtido atendeu às expectativas do grupo, gerando o que foi solicitado na atividade.
   </section>
 </document>
