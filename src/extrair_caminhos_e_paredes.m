@@ -1,4 +1,4 @@
-function [caminhos_livres, qtd_caminhos, paredes, qtd_paredes] = obter_info_caminhos_paredes(B, n_celulas)
+function [caminhos_livres, qtd_caminhos, paredes, qtd_paredes] = extrair_caminhos_e_paredes(B, n_celulas)
   if nargin < 2 || isempty(n_celulas)
     n_celulas = 41;
   endif
@@ -12,8 +12,8 @@ function [caminhos_livres, qtd_caminhos, paredes, qtd_paredes] = obter_info_cami
 
   for i = 1:n
     for j = 1:n
-      id_no = obter_id_no(n, i, j);
-      [x, y] = obter_centro_celula(B, i, j, n);
+      id_no = calcular_id_no(n, i, j);
+      [x, y] = calcular_centro_celula(B, i, j, n);
       valor = B(y, x);
 
       if valor == 1

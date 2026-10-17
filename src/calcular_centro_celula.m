@@ -1,4 +1,4 @@
-function [x_centro, y_centro] = obter_centro_celula(B, i, j, n_celulas)
+function [x_centro, y_centro] = calcular_centro_celula(B, i, j, n_celulas)
   if nargin < 4 || isempty(n_celulas)
     n_celulas = 41;
   end

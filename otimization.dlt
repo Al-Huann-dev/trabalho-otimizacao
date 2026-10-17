@@ -122,10 +122,12 @@
         </proof>
       </proposition> 
 
-      A função foi implementada no módulo <c>obter_id_no.m</c>
+      A função foi implementada no módulo <c>calcular_id_no
+.m</c>
 
       <code lang="matlab">
-      function id = obter_id_no(n, i, j)
+      function id = calcular_id_no
+(n, i, j)
         id = (i - 1) * n + j;
       end
       </code>
@@ -189,10 +191,10 @@
         <equation id="y-centro">Y(j) = \lfloor j \cdot \Delta{y} - \Delta{y} / 2 \rfloor</equation>
 
         Onde <m>X(i) \in \mathbb{N}</m> e <m>Y(i) \in \mathbb{N}</m>. A partir das relações <ref to="x-centro" /> e <ref to="y-centro" /> 
-        implementamos no módulo <c>obter_centro_celula.m</c>
+        implementamos no módulo <c>calcular_centro_celula.m</c>
 
         <code lang="matlab" lines="true">
-          function [x_centro, y_centro] = obter_centro_celula(B, i, j, n_celulas)
+          function [x_centro, y_centro] = calcular_centro_celula(B, i, j, n_celulas)
             if nargin < 4 || isempty(n_celulas)
               n_celulas = 41;
             end
@@ -217,7 +219,7 @@
 
         O maior problema que temos para verificar a passagem de um labirinto é lidar com o tamanho da imagem
         com o tamanho dos blocos do labirinto. Para termos uma métrica de distância entre células adotamos o centro
-        de um bloco\célula da <c>obter_centro_celula</c>. A idéia para verificar se há uma passagem entre pares de
+        de um bloco\célula da <c>calcular_centro_celula</c>. A idéia para verificar se há uma passagem entre pares de
         células e comparar se os dois centro são caminhos livres. Mas isso pode ocasionar em falsos caminhos livres, então
         faremos a verificação se todos os pixels entre cada centro são todos pretos
 
@@ -234,8 +236,8 @@
               n_celulas = 41;
             endif
 
-            [x1, y1] = obter_centro_celula(B, i, j1, n_celulas);
-            [x2, ~] = obter_centro_celula(B, i, j2, n_celulas);
+            [x1, y1] = calcular_centro_celula(B, i, j1, n_celulas);
+            [x2, ~] = calcular_centro_celula(B, i, j2, n_celulas);
 
             x_inicio = min(x1, x2);
             x_fim = max(x1, x2);
@@ -260,8 +262,8 @@
               n_celulas = 41;
             endif
 
-            [x1, y1] = obter_centro_celula(B, i1, j, n_celulas);
-            [~, y2] = obter_centro_celula(B, i2, j, n_celulas);
+            [x1, y1] = calcular_centro_celula(B, i1, j, n_celulas);
+            [~, y2] = calcular_centro_celula(B, i2, j, n_celulas);
 
             y_inicio = min(y1, y2);
             y_fim = max(y1, y2);
@@ -301,8 +303,10 @@
               for j = 1:n
                 if j < n
                   if verificar_passagem_horizontal(B, i, j, j + 1, n)
-                    id_u = obter_id_no(n, i, j);
-                    id_v = obter_id_no(n, i, j + 1);
+                    id_u = calcular_id_no
+(n, i, j);
+                    id_v = calcular_id_no
+(n, i, j + 1);
                     qtd_arestas = qtd_arestas + 1;
 
                     arestas_temp(qtd_arestas, :) = [id_u, id_v];
@@ -310,8 +314,10 @@
                 endif
                 if i < n
                   if verificar_passagem_vertical(B, i, i + 1, j, n)
-                    id_u = obter_id_no(n, i, j);
-                    id_v = obter_id_no(n, i + 1, j);
+                    id_u = calcular_id_no
+(n, i, j);
+                    id_v = calcular_id_no
+(n, i + 1, j);
                     qtd_arestas = qtd_arestas + 1;
 
                     arestas_temp(qtd_arestas, :) = [id_u, id_v];

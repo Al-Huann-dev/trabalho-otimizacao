@@ -1,5 +1,5 @@
-function ok = test_obter_info_caminhos_paredes()
-    fprintf("Executando: test_obter_info_caminhos_paredes... ");
+function ok = test_extrair_caminhos_e_paredes()
+    fprintf("Executando: test_extrair_caminhos_e_paredes... ");
 
     % --- CENÁRIO MOCK (Grid 3x3) ---
     % Matriz com:
@@ -18,7 +18,7 @@ function ok = test_obter_info_caminhos_paredes()
     B = kron(matriz_blocos, ones(tamanho_bloco));
 
     % --- EXECUÇÃO ---
-    [caminhos_livres, qtd_caminhos, paredes, qtd_paredes] = obter_info_caminhos_paredes(B, n_celulas);
+    [caminhos_livres, qtd_caminhos, paredes, qtd_paredes] = extrair_caminhos_e_paredes(B, n_celulas);
 
     % --- VALIDAÇÕES ---
     % 1. Quantidade de caminhos livres esperada = 6

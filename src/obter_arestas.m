@@ -13,8 +13,8 @@ function [arestas, qtd_arestas] = obter_arestas(B, n_celulas)
     for j = 1:n
       if j < n
         if verificar_passagem_horizontal(B, i, j, j + 1, n)
-          id_u = obter_id_no(n, i, j);
-          id_v = obter_id_no(n, i, j + 1);
+          id_u = calcular_id_no(n, i, j);
+          id_v = calcular_id_no(n, i, j + 1);
           qtd_arestas = qtd_arestas + 1;
 
           arestas_temp(qtd_arestas, :) = [id_u, id_v];
@@ -22,8 +22,8 @@ function [arestas, qtd_arestas] = obter_arestas(B, n_celulas)
       endif
       if i < n
         if verificar_passagem_vertical(B, i, i + 1, j, n)
-          id_u = obter_id_no(n, i, j);
-          id_v = obter_id_no(n, i + 1, j);
+          id_u = calcular_id_no(n, i, j);
+          id_v = calcular_id_no(n, i + 1, j);
           qtd_arestas = qtd_arestas + 1;
 
           arestas_temp(qtd_arestas, :) = [id_u, id_v];
