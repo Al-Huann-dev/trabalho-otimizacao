@@ -3,7 +3,7 @@ function [caminhos_livres, qtd_caminhos, paredes, qtd_paredes] = extrair_caminho
     n_celulas = 41;
   endif
 
-  n = n_celulas
+  n = n_celulas;
 
   caminhos_livres_temp = zeros(n^2, 1);
   qtd_caminhos = 0;

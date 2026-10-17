@@ -1,3 +1,4 @@
+% Parte 2 / item c), d) e e)
 function [arestas, qtd_arestas] = obter_arestas(B, n_celulas)
   if nargin < 2 || isempty(n_celulas)
     n_celulas = 41;

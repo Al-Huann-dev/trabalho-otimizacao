@@ -14,7 +14,6 @@ function ok = test_obter_arestas()
   B = kron(matriz_blocos, ones(tamanho_bloco));
 
   [arestas, ~] = obter_arestas(B, n_celulas);
-  disp(arestas);
 
   % Validações:
   % 1. Total de arestas esperadas = 5
